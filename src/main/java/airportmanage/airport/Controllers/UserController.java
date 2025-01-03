@@ -26,13 +26,16 @@ public class UserController {
         try {
 
             User createUser = userService.createUser(userDTO);
+
+            userService.inserLogin(userDTO);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         }
-        
+
     }
 
 }
