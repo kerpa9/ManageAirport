@@ -1,5 +1,9 @@
 package airportmanage.airport.Repository;
 
-public class UserRepository {
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import airportmanage.airport.Domain.Models.User;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
 }
