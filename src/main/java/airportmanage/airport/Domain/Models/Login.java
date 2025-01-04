@@ -7,7 +7,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import airportmanage.airport.Domain.Enums.RoleUser;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,11 +39,8 @@ public class Login implements UserDetails {
     // @NotNull
     private String password;
     // @NotNull
-    private Boolean active;
-
-    public void setStatusInactiveLogin() {
-        this.active = false;
-    }
+    @Enumerated(EnumType.STRING)
+    private RoleUser role_user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

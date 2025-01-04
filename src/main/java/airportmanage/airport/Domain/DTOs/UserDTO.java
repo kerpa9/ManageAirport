@@ -19,6 +19,7 @@ public record UserDTO(
         @NotBlank 
         String password,
         @Enumerated(EnumType.STRING) @NotNull Genre genre,
+        @NotNull
         @Enumerated(EnumType.STRING) @NotNull RoleUser role_user,
         Boolean active,
         LocalDateTime created_at
