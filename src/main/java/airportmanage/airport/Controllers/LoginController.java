@@ -18,10 +18,10 @@ import airportmanage.airport.Domain.DTOs.LoginDTO;
 import airportmanage.airport.Domain.Models.Login;
 import airportmanage.airport.Services.TokenService;
 import jakarta.validation.Valid;
-import lombok.experimental.var;
 
 @RestController
 @RequestMapping("/api/v1/login")
+@SuppressWarnings("rawtypes")
 public class LoginController {
 
     @Autowired
@@ -30,7 +30,6 @@ public class LoginController {
     @Autowired
     private TokenService tokenService;
 
-    @SuppressWarnings("rawtypes")
     @PostMapping
     public ResponseEntity loginUser(@RequestBody @Valid LoginDTO loginDTO) {
 

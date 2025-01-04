@@ -23,7 +23,6 @@ public class TokenService {
     @Value("${spring.security.secret}")
     private String apiSecret;
     
-    // Thread-safe set para almacenar tokens invalidados
     private Set<String> invalidatedTokens = ConcurrentHashMap.newKeySet();
 
     public String generatedToken(Login registerUser) {
@@ -47,7 +46,6 @@ public class TokenService {
             throw new RuntimeException("Token is null");
         }
         
-        // Verificar si el token ha sido invalidado
         if (isTokenInvalidated(token)) {
             throw new RuntimeException("Token has been invalidated");
         }
@@ -69,27 +67,22 @@ public class TokenService {
         }
     }
 
-    // Método para invalidar un token (logout)
     public void invalidateToken(String token) {
         if (token != null && !token.isEmpty()) {
-            // Limpia el formato del token si viene con "Bearer "
             String cleanToken = token.replace("Bearer ", "");
             invalidatedTokens.add(cleanToken);
         }
     }
     
-    // Método para verificar si un token está invalidado
     public boolean isTokenInvalidated(String token) {
         if (token == null || token.isEmpty()) {
             return true;
         }
-        // Limpia el formato del token si viene con "Bearer "
         String cleanToken = token.replace("Bearer ", "");
         return invalidatedTokens.contains(cleanToken);
     }
 
     private Instant generateExpiration() {
-        // Token válido por 8 horas
         return LocalDateTime.now()
                 .plusHours(8)
                 .toInstant(ZoneOffset.of("-05:00"));
