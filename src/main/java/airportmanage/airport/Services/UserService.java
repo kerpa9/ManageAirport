@@ -40,6 +40,7 @@ public class UserService {
         Login login = new Login();
         login.setEmail(loginData.email());
         login.setPassword(loginData.password());
+        login.setActive(loginData.active());
         return loginRepository.save(login);
 
     }
