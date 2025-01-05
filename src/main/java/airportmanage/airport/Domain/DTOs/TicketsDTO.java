@@ -15,4 +15,8 @@ public record TicketsDTO(
         Boolean active,
         LocalDateTime created_at) {
 
+    public TicketsDTO {
+        active = active == null ? true : active;
+    }
+
 }

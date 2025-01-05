@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity(name = "Tickets")
-@Table(name = "Tickets")
+@Table(name = "tickets")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -39,8 +39,8 @@ public class Tickets implements IUserOwnedEntity {
     private TypeClass type_class;
     private Double price;
     private Integer seat_number;
-    private Boolean active;
     private LocalDateTime created_at;
+    private Boolean active;
 
     public void setStatusInactiveTicket() {
         this.active = false;

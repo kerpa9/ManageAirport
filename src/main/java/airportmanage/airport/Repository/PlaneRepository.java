@@ -37,8 +37,8 @@ public interface PlaneRepository extends BaseRepository<Plane> {
     Plane findByIdActive(@Param("id") Long id);
 
     @Query("""
-            select r from Plane r where r.active=TRUE
-            and r.id_login = :id_login and r.id_plane = :id_plane""")
+            select t from Plane t where t.active=TRUE
+            and t.id_login = :id_login and t.id_plane = :id_plane""")
     Passenger findByIdUserLogin(
             @Param("id_plane") Long id_plane,
             @Param("id_login") Long id_login);
