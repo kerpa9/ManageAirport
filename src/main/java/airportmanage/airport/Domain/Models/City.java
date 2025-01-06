@@ -39,6 +39,10 @@ public class City implements IUserOwnedEntity {
     private LocalDateTime created_at;
     private Boolean active;
 
+    public void setStatusInactiveCity() {
+        this.active = false;
+    }
+
     @Override
     public Long getUserId() {
         return id_login;
