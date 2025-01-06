@@ -2,6 +2,8 @@ package airportmanage.airport.Domain.Models;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,8 +16,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "city")
-@Table(name = "City")
+@Entity(name = "City")
+@Table(name = "city")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,6 +29,7 @@ public class City implements IUserOwnedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonIgnore
     private Long id_login;
     private Long id_city;
     private String name;
