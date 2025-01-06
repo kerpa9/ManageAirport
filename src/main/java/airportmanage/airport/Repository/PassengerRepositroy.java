@@ -37,8 +37,8 @@ public interface PassengerRepositroy extends BaseRepository<Passenger> {
     Passenger findByIdActive(@Param("id") Long id);
 
     @Query("""
-            select r from Passenger r where r.active=TRUE
-            and r.id_login = :id_login and r.id_passenger = :id_passenger""")
+            select p from Passenger p where p.active=TRUE
+            and p.id_login = :id_login and p.id_passenger = :id_passenger""")
     Passenger findByIdUserLogin(
             @Param("id_passenger") Long id_passenger,
             @Param("id_login") Long id_login);
