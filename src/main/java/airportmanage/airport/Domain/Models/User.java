@@ -43,8 +43,18 @@ public class User {
     private RoleUser role_user;
     private LocalDateTime created_at;
     private Boolean active;
+    //Verify email
+    private String verification;
+    private LocalDateTime token_expiry;
+    private Boolean email_verified;
 
     public void setStatusInactiveUser() {
         this.active = false;
     }
+
+    public void verifyEmail() {
+            this.email_verified = true;
+    }
+
+  
 }

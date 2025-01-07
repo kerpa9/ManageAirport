@@ -3,6 +3,7 @@ package airportmanage.airport.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import airportmanage.airport.Config.EmailSender;
 import airportmanage.airport.Domain.DTOs.UserDTO;
 import airportmanage.airport.Domain.Models.Login;
 import airportmanage.airport.Domain.Models.User;
@@ -20,6 +21,9 @@ public class UserService {
     @Autowired
     private LoginRepository loginRepository;
 
+    @Autowired
+    private EmailSender emailSender;
+
     @Transactional
     public User createUser(@Valid UserDTO userDTO) {
 
@@ -31,7 +35,11 @@ public class UserService {
         user.setRole_user(userDTO.role_user());
         user.setCreated_at(userDTO.created_at());
         user.setActive(userDTO.active());
-        return repository.save(user);
+        user.setEmail_verified(false);
+        user = repository.save(user);
+        emailSender.sendValidateEmail(user);
+
+        return user;
 
     }
 

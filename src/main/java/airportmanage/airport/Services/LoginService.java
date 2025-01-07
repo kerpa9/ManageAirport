@@ -21,9 +21,5 @@ public class LoginService implements UserDetailsService {
         return loginRepository.findByEmail(email);
     }
 
-    // @Autowired
-    // public Login logged(){
-
-    // }
 
 }

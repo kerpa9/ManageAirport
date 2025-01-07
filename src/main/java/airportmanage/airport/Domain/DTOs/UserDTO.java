@@ -15,12 +15,13 @@ public record UserDTO(
 
         Long id,
         @NotBlank String full_name,
-        @NotBlank  @Email String email,
-        @NotBlank 
-        String password,
+        @NotBlank @Email String email,
+        @NotBlank String password,
         @Enumerated(EnumType.STRING) @NotNull Genre genre,
-        @NotNull
-        @Enumerated(EnumType.STRING) @NotNull RoleUser role_user,
+        @NotNull @Enumerated(EnumType.STRING) @NotNull RoleUser role_user,
+        String verification,
+        LocalDateTime token_expiry,
+        Boolean email_verified,
         Boolean active,
         LocalDateTime created_at
 
@@ -29,6 +30,7 @@ public record UserDTO(
         HashPassword hash = new HashPassword();
         password = hash.hashingPass(password);
         active = active == null ? true : active;
+        email_verified = email_verified == null ? false : email_verified;
         role_user = role_user == null ? RoleUser.user : role_user;
     }
 

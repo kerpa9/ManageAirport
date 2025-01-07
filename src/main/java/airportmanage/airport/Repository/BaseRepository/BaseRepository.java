@@ -16,21 +16,22 @@ import airportmanage.airport.Domain.Enums.RoleUser;
 
 @NoRepositoryBean
 public interface BaseRepository<T extends IUserOwnedEntity> extends JpaRepository<T, Long> {
-    
-        @Query("""
-        SELECT l.role_user 
-        FROM Login l 
-        WHERE l.id = :loginId
-        """)
+
+    // Authentication role user
+    @Query("""
+            SELECT l.role_user
+            FROM Login l
+            WHERE l.id = :loginId
+            """)
     RoleUser findLoginRole(@Param("loginId") Long loginId);
 
     default T saveWithRoleValidation(T entity, Set<RoleUser> authorizedRoles) {
         RoleUser userRole = findLoginRole(entity.getId_login());
-        
+
         if (authorizedRoles.contains(userRole)) {
             return save(entity);
         }
-        throw new RuntimeException("No role authorization for role: " + userRole);
+        throw new RuntimeException("No role authorization for insert: " + userRole);
     }
 
     @Query("SELECT e FROM #{#entityName} e WHERE e.id_login = :id_login")

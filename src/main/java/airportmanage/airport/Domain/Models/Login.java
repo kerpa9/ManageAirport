@@ -42,6 +42,8 @@ public class Login implements UserDetails {
     @Enumerated(EnumType.STRING)
     private RoleUser role_user;
 
+   
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub
@@ -78,10 +80,6 @@ public class Login implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        return true;
-    }
+
 
 }

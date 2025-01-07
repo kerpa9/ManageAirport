@@ -7,6 +7,9 @@ create table user(
         genre VARCHAR(50) NOT NULL CHECK (genre IN ("male", "female", "prefer_not_to_say")),
         role_user VARCHAR(50) NOT NULL CHECK (role_user IN ("user", "receptionist", "admin", "manager", "developers"
         )) DEFAULT 'user',
+        verification varchar(255),
+        email_verified boolean default false,
+        token_expiry DATETIME DEFAULT CURRENT_TIMESTAMP,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         active boolean default true,
    
