@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import airportmanage.airport.Domain.DTOs.BookingDTO;
+import airportmanage.airport.Domain.Enums.RoleUser;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Repository.BookingRepository;
 import jakarta.transaction.Transactional;
@@ -21,9 +22,12 @@ public class BookingService {
     @Transactional
     public Booking createBooking(@Valid BookingDTO bookingDTO) {
 
-        Booking booking = new Booking();
-
+        
         Long loginId = filterLoginService.getUserLogin();
+        
+        RoleUser role = bookingRepository.findLoginRole(loginId);
+        
+        Booking booking = new Booking();
 
         Long seqBooking = bookingRepository.generatedInsertSequential(loginId) + 1;
 
@@ -35,7 +39,7 @@ public class BookingService {
         booking.setCreated_at(bookingDTO.created_at());
         booking.setActive(bookingDTO.active());
 
-        return bookingRepository.save(booking);
+        return bookingRepository.saveWithRoleValidation(booking, role);
 
     }
 
