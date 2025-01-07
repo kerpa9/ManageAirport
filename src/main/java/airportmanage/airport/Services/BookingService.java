@@ -22,11 +22,8 @@ public class BookingService {
     @Transactional
     public Booking createBooking(@Valid BookingDTO bookingDTO) {
 
-        
         Long loginId = filterLoginService.getUserLogin();
-        
-        RoleUser role = bookingRepository.findLoginRole(loginId);
-        
+
         Booking booking = new Booking();
 
         Long seqBooking = bookingRepository.generatedInsertSequential(loginId) + 1;
@@ -39,7 +36,7 @@ public class BookingService {
         booking.setCreated_at(bookingDTO.created_at());
         booking.setActive(bookingDTO.active());
 
-        return bookingRepository.saveWithRoleValidation(booking, role);
+        return bookingRepository.saveBookingWithRoles(booking);
 
     }
 

@@ -1,5 +1,6 @@
 package airportmanage.airport.Repository;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,25 +15,12 @@ import airportmanage.airport.Repository.BaseRepository.BaseRepository;
 
 public interface BookingRepository extends BaseRepository<Booking> {
 
-        @Query("""
-                        SELECT l.role_user
-                        FROM Login l
-                        WHERE l.id = :loginId
-                        """)
-        RoleUser findLoginRole(@Param("loginId") Long loginId);
 
-        default Booking saveWithRoleValidation(Booking booking, RoleUser role) {
-                boolean canCreate = switch (role) {
-                        case admin, manager -> true;
-                        case receptionist -> true;
-                        default -> false;
-                };
-
-                if (canCreate) {
-                        return save(booking);
-                }
-                throw new RuntimeException("No role authorization");
+        default Booking saveBookingWithRoles(Booking booking) {
+                return saveWithRoleValidation(booking,
+                                EnumSet.of(RoleUser.admin, RoleUser.manager, RoleUser.receptionist));
         }
+
 
         @Override
         Optional<Booking> findByIdAndIdLogin(Long id, Long id_login);

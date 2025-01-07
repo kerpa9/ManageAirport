@@ -10,4 +10,6 @@ public interface IUserOwnedEntity {
 
     void setUserId(Long userId);
 
+    Long getId_login();
+
 }
