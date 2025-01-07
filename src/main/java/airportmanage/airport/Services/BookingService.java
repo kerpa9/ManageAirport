@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import airportmanage.airport.Domain.DTOs.BookingDTO;
-import airportmanage.airport.Domain.Enums.RoleUser;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Repository.BookingRepository;
 import jakarta.transaction.Transactional;
