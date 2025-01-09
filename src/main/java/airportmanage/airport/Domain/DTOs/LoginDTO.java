@@ -13,6 +13,8 @@ public record LoginDTO(
 
     public LoginDTO {
         role_user = role_user == null ? RoleUser.user : role_user;
+
+
     }
 
 }

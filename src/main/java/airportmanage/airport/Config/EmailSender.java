@@ -15,7 +15,7 @@ import airportmanage.airport.Repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
- 
+
 @Service
 @Transactional
 public class EmailSender {
@@ -34,31 +34,31 @@ public class EmailSender {
     private UserRepository userRepository;
 
     public void sendValidateEmail(User user) {
-        logger.info("Send email: {}", user.getEmail());
+        logger.info("Initiating email validation process for: {}", user.getEmail());
         
         try {
             String token = UUID.randomUUID().toString();
-            logger.debug("Generated token: {}", token);
+            logger.debug("Generated verification token: {}", token);
             
             user.setVerification(token);
             user.setToken_expiry(LocalDateTime.now().plusDays(1));
             userRepository.save(user);
-            logger.debug("Updated user");
+            logger.debug("User updated with verification token");
 
             sendEmail(user.getEmail(), token);
-            logger.info("Verified email");
+            logger.info("Verification email sent successfully");
             
         } catch (Exception e) {
-            logger.error("Error send email: ", e);
-            throw new RuntimeException("Error send email", e);
+            logger.error("Failed to send verification email: ", e);
+            throw new RuntimeException("Error sending verification email", e);
         }
     }
 
     private void sendEmail(String to, String token) {
-        logger.debug("Building email for: {}", to);
+        logger.debug("Building verification email for: {}", to);
         
-        String verificationLink = baseUrl + "?token=" + token;
-        logger.debug("Link verified: {}", verificationLink);
+        String verificationLink = baseUrl + "/verify?token=" + token;
+        logger.debug("Verification link generated: {}", verificationLink);
 
         MimeMessage message = mail.createMimeMessage();
         try {
@@ -68,13 +68,13 @@ public class EmailSender {
             helper.setSubject("Verify your account");
             helper.setText(buildEmailContent(verificationLink), true);
             
-            logger.debug("Attempting to send email...");
+            logger.debug("Attempting to send verification email...");
             mail.send(message);
-            logger.debug("Email sent successfully");
+            logger.debug("Verification email sent successfully");
             
         } catch (MessagingException e) {
-            logger.error("Error send email: ", e);
-            throw new RuntimeException("Error send email : " + e.getMessage(), e);
+            logger.error("Failed to send verification email: ", e);
+            throw new RuntimeException("Error sending verification email: " + e.getMessage(), e);
         }
     }
 
@@ -84,7 +84,7 @@ public class EmailSender {
                 <head>
                     <style>
                         .button {
-                            background-color:rgb(175, 91, 76);
+                            background-color: rgb(175, 91, 76);
                             border: none;
                             color: white;
                             padding: 15px 32px;
@@ -122,15 +122,35 @@ public class EmailSender {
         logger.debug("Attempting to verify token: {}", token);
         
         return userRepository.findByVerification(token)
-            .filter(user -> !user.getEmail_verified() && 
-                          user.getToken_expiry().isAfter(LocalDateTime.now()))
-            .map(user -> {
-                user.verifyEmail();
-                user.setActive(true);
-                userRepository.save(user);
-                logger.info("Email successfully verified for the user: {}", user.getEmail());
-                return true;
+            .filter(user -> {
+                boolean isValid = !user.getEmail_verified() && 
+                                user.getToken_expiry().isAfter(LocalDateTime.now());
+                
+                if (!isValid) {
+                    logger.warn("Invalid verification attempt for token: {}. Already verified: {}, Token expired: {}", 
+                        token, 
+                        user.getEmail_verified(),
+                        !user.getToken_expiry().isAfter(LocalDateTime.now()));
+                }
+                
+                return isValid;
             })
-            .orElse(false);
+            .map(user -> {
+                try {
+                    user.verifyEmail();
+                    user.setActive(true);
+                    user.setVerification(null);
+                    userRepository.save(user);
+                    logger.info("Email successfully verified for user: {}", user.getEmail());
+                    return true;
+                } catch (Exception e) {
+                    logger.error("Error during email verification for user: {}", user.getEmail(), e);
+                    return false;
+                }
+            })
+            .orElseGet(() -> {
+                logger.warn("No user found with verification token: {}", token);
+                return false;
+            });
     }
 }

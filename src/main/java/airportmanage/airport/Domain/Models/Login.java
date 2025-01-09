@@ -42,6 +42,7 @@ public class Login implements UserDetails {
     @Enumerated(EnumType.STRING)
     private RoleUser role_user;
 
+
    
 
     @Override

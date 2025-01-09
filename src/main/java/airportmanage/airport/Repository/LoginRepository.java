@@ -7,6 +7,8 @@ import airportmanage.airport.Domain.Models.Login;
 
 public interface LoginRepository extends JpaRepository<Login, Long> {
 
+
+  
     UserDetails findByEmail(String email);
 
     boolean existsByEmail(String email);

@@ -22,6 +22,9 @@ public class UserService {
     private LoginRepository loginRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private EmailSender emailSender;
 
     @Transactional
