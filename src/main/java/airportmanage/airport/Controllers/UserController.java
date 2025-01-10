@@ -18,7 +18,6 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/user")
-@SuppressWarnings("rawtypes")
 public class UserController {
 
     @Autowired
@@ -33,8 +32,6 @@ public class UserController {
         try {
 
             User createUser = userService.createUser(userDTO);
-
-            userService.inserLogin(userDTO);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
 

@@ -22,14 +22,12 @@ public class UserService {
     private LoginRepository loginRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private EmailSender emailSender;
+
 
     @Transactional
     public User createUser(@Valid UserDTO userDTO) {
-
+        // Crear el usuario
         User user = new User();
         user.setFull_name(userDTO.full_name());
         user.setEmail(userDTO.email());
@@ -41,19 +39,14 @@ public class UserService {
         user.setEmail_verified(false);
         user = repository.save(user);
         emailSender.sendValidateEmail(user);
-
-        return user;
-
-    }
-
-    @Transactional
-    public Login inserLogin(@Valid UserDTO loginData) {
+        
         Login login = new Login();
-        login.setEmail(loginData.email());
-        login.setPassword(loginData.password());
-        login.setRole_user(loginData.role_user());
-        return loginRepository.save(login);
-
+        login.setEmail(userDTO.email());
+        login.setPassword(userDTO.password());
+        login.setRole_user(userDTO.role_user());
+        loginRepository.save(login);
+    
+        return user;
     }
 
 }

@@ -5,18 +5,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-// import airportmanage.airport.Domain.Models.Login;
 import airportmanage.airport.Repository.LoginRepository;
 import airportmanage.airport.Repository.UserRepository;
 
 @Service
 public class LoginService implements UserDetailsService {
-    @Autowired
-    private LoginRepository loginRepository;
 
     @Autowired
-    private FilterLoginService filterLoginService;
+    private LoginRepository loginRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -24,14 +20,23 @@ public class LoginService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        var id = filterLoginService.getUserLogin();
+        try {
+            System.out.println("------------------------");
+            System.out.println("------------------------");
+            System.out.println(userRepository.getNextUserId());
+            System.out.println(userRepository.findEmailVerifiedById(userRepository.getNextUserId()));
+            System.out.println("------------------------");
+            System.out.println("------------------------");
+            if (!userRepository.findEmailVerifiedById(userRepository.getNextUserId())) {
 
-        if (userRepository.findEmailVerifiedById(id)) {
+                throw new RuntimeException("Error");
 
+            }
             return loginRepository.findByEmail(email);
 
-        } else {
+        } catch (Exception e) {
             throw new RuntimeException("Error");
+
         }
 
     }

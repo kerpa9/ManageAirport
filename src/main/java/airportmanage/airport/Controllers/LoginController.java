@@ -30,6 +30,8 @@ public class LoginController {
     @Autowired
     private TokenService tokenService;
 
+  
+
     @PostMapping
     public ResponseEntity loginUser(@RequestBody @Valid LoginDTO loginDTO) {
 
@@ -37,7 +39,7 @@ public class LoginController {
             Authentication token = new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password());
 
             Authentication loginAuth = authenticationManager.authenticate(token);
-
+        
             String jwtToken = tokenService.generatedToken((Login) loginAuth.getPrincipal());
 
             return ResponseEntity.ok(new DataJWTToken(jwtToken));
@@ -45,7 +47,7 @@ public class LoginController {
         } catch (AuthenticationException e) {
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("User not found in the database, please verify the registration");
+                    .body("User not found in the database, please verify the registration or verify at email");
 
         }
     }
