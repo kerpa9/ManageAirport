@@ -20,14 +20,16 @@ public class LoginService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-            if (!userRepository.findEmailVerifiedById(userRepository.getNextUserId())) {
+        System.out.println("*********************************");
+        System.out.println(userRepository.getNextUserId(email));
+        System.out.println("*********************************");
 
-                throw new RuntimeException("Error");
+        if (!userRepository.findEmailVerifiedById(userRepository.getNextUserId(email))) {
 
-            }
-            return loginRepository.findByEmail(email);
+            throw new RuntimeException("Error");
 
-    
+        }
+        return loginRepository.findByEmail(email);
 
     }
 

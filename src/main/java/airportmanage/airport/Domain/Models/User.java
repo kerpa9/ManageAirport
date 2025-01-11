@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import airportmanage.airport.Domain.Enums.Genre;
 import airportmanage.airport.Domain.Enums.RoleUser;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,7 +34,7 @@ public class User {
     private Long id;
     @NotBlank
     private String full_name;
-    @NotBlank @Email
+    @NotBlank @Email @Column(unique = true)
     private String email;
     @NotBlank
     private String password;
@@ -43,7 +44,7 @@ public class User {
     private RoleUser role_user;
     private LocalDateTime created_at;
     private Boolean active;
-    //Verify email
+    // Verify email
     private String verification;
     private LocalDateTime token_expiry;
     private Boolean email_verified;
@@ -53,8 +54,7 @@ public class User {
     }
 
     public void verifyEmail() {
-            this.email_verified = true;
+        this.email_verified = true;
     }
 
-  
 }

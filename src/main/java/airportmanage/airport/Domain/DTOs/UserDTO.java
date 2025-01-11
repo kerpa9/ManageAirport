@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import airportmanage.airport.Config.Security.HashPassword;
 import airportmanage.airport.Domain.Enums.Genre;
 import airportmanage.airport.Domain.Enums.RoleUser;
+import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
@@ -15,7 +16,8 @@ public record UserDTO(
 
         Long id,
         @NotBlank String full_name,
-        @NotBlank @Email String email,
+        @NotBlank @Email @Column(unique = true)
+        String email,
         @NotBlank String password,
         @Enumerated(EnumType.STRING) @NotNull Genre genre,
         @NotNull @Enumerated(EnumType.STRING) @NotNull RoleUser role_user,
