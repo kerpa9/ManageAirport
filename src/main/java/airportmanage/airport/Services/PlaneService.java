@@ -36,7 +36,7 @@ public class PlaneService {
         plane.setCreated_at(planeDTO.created_at());
         plane.setActive(planeDTO.active());
 
-        return planeRepository.save(plane);
+        return planeRepository.savePlaneWithRole(plane);
 
     }
 

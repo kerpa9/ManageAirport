@@ -1,5 +1,6 @@
 package airportmanage.airport.Repository;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,39 +9,45 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import airportmanage.airport.Domain.Enums.RoleUser;
 import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Domain.Models.Plane;
 import airportmanage.airport.Repository.BaseRepository.BaseRepository;
 
 public interface PlaneRepository extends BaseRepository<Plane> {
-    @Override
-    Optional<Plane> findByIdAndIdLogin(Long id, Long id_login);
 
-    @Override
-    List<Plane> findAllByIdLogin(Long id_login);
+        default Plane savePlaneWithRole(Plane plane) {
+                return saveWithRoleValidation(plane, EnumSet.of(RoleUser.admin));
+        }
 
-    @Query("SELECT COALESCE(MAX(p.id_plane), 0) FROM Plane p WHERE p.id_login = :id_login")
-    Long generatedInsertSequential(@Param("id_login") Long id_login);
+        @Override
+        Optional<Plane> findByIdAndIdLogin(Long id, Long id_login);
 
-    @Query("""
-                select p from Plane p where p.active = true and p.id_login=:id
-            """)
-    Page<Plane> findAllActive(Long id, Pageable pageable);
+        @Override
+        List<Plane> findAllByIdLogin(Long id_login);
 
-    @Query("""
-            select p from Plane p
-            where
-            p.active=TRUE
-            and
-            p.id= :id
-            """)
-    Plane findByIdActive(@Param("id") Long id);
+        @Query("SELECT COALESCE(MAX(p.id_plane), 0) FROM Plane p WHERE p.id_login = :id_login")
+        Long generatedInsertSequential(@Param("id_login") Long id_login);
 
-    @Query("""
-            select t from Plane t where t.active=TRUE
-            and t.id_login = :id_login and t.id_plane = :id_plane""")
-    Passenger findByIdUserLogin(
-            @Param("id_plane") Long id_plane,
-            @Param("id_login") Long id_login);
+        @Query("""
+                            select p from Plane p where p.active = true and p.id_login=:id
+                        """)
+        Page<Plane> findAllActive(Long id, Pageable pageable);
+
+        @Query("""
+                        select p from Plane p
+                        where
+                        p.active=TRUE
+                        and
+                        p.id= :id
+                        """)
+        Plane findByIdActive(@Param("id") Long id);
+
+        @Query("""
+                        select t from Plane t where t.active=TRUE
+                        and t.id_login = :id_login and t.id_plane = :id_plane""")
+        Passenger findByIdUserLogin(
+                        @Param("id_plane") Long id_plane,
+                        @Param("id_login") Long id_login);
 
 }

@@ -37,7 +37,7 @@ public class PassengerService {
         passenger.setPassword(passengerDTO.password());
         passenger.setActive(passengerDTO.active());
 
-        return passengerRepositroy.save(passenger);
+        return passengerRepositroy.savePassengerWithRoles(passenger);
 
     }
 }

@@ -34,7 +34,7 @@ public class FlightService {
         flight.setCreated_at(flightDTO.created_at());
         flight.setActive(flightDTO.active());
 
-        return flightRepository.save(flight);
+        return flightRepository.saveFlightWithRoles(flight);
 
     }
 
