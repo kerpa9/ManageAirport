@@ -11,6 +11,9 @@ create table passenger(
         password varchar(100) not null,
         phone varchar(100) not null,
         active boolean default true,
+        INDEX idx_id_login (id_login),
+        INDEX idx_id_login_id (id_login, id),
+        UNIQUE INDEX uk_user_sequential (id_login, id_passenger),
    
         primary key(id)
 

@@ -7,6 +7,9 @@ create table flight(
         check_in DATETIME DEFAULT CURRENT_TIMESTAMP,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         active boolean default true,
+        INDEX idx_id_login (id_login),
+        INDEX idx_id_login_id (id_login, id),
+        UNIQUE INDEX uk_user_sequential (id_login, id_flight),
    
         primary key(id)
 
