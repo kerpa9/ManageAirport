@@ -36,7 +36,7 @@ public class CitiesService {
         city.setCreated_at(cityDTO.created_at());
         city.setActive(cityDTO.active());
 
-        return citiesRepository.save(city);
+        return citiesRepository.saveCityWithRoles(city);
         
 
     }

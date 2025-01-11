@@ -18,7 +18,7 @@ public interface BookingRepository extends BaseRepository<Booking> {
 
         default Booking saveBookingWithRoles(Booking booking) {
                 return saveWithRoleValidation(booking,
-                                EnumSet.of(RoleUser.admin, RoleUser.manager, RoleUser.receptionist));
+                                EnumSet.of(RoleUser.admin, RoleUser.receptionist));
         }
 
 

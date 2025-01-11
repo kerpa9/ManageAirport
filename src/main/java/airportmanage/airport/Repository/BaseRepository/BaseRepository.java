@@ -24,6 +24,7 @@ public interface BaseRepository<T extends IUserOwnedEntity> extends JpaRepositor
             WHERE l.id = :loginId
             """)
     RoleUser findLoginRole(@Param("loginId") Long loginId);
+    
 
     default T saveWithRoleValidation(T entity, Set<RoleUser> authorizedRoles) {
         RoleUser userRole = findLoginRole(entity.getId_login());
@@ -31,7 +32,7 @@ public interface BaseRepository<T extends IUserOwnedEntity> extends JpaRepositor
         if (authorizedRoles.contains(userRole)) {
             return save(entity);
         }
-        throw new RuntimeException("No role authorization for insert: " + userRole);
+        throw new RuntimeException("No role authorization: " + userRole);
     }
 
     @Query("SELECT e FROM #{#entityName} e WHERE e.id_login = :id_login")
