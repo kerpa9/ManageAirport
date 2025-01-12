@@ -6,6 +6,7 @@ create table tickets(
         type_class VARCHAR(50) NOT NULL CHECK (type_class IN ("first_class", "ejecutive_class","premium_economic_class","economic_class")),
         price float not null,
         seat_number integer not null,
+        passenger varchar(200),
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         active boolean default true,
         INDEX idx_id_login (id_login),

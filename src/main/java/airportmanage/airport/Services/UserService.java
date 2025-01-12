@@ -2,6 +2,8 @@ package airportmanage.airport.Services;
 
 import java.util.stream.Collectors;
 
+// import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import airportmanage.airport.Config.EmailSender;
 import airportmanage.airport.Domain.DTOs.UserDTO;
 import airportmanage.airport.Domain.Models.Login;
 import airportmanage.airport.Domain.Models.Passenger;
+// import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Domain.Models.User;
 import airportmanage.airport.Repository.LoginRepository;
 import airportmanage.airport.Repository.UserRepository;
@@ -45,7 +48,7 @@ public class UserService {
             user.setPassengers(
                     userDTO.passenger().stream()
                             .map(u -> new Passenger(null, null, null, u.first_name(), u.last_name(), null, u.genre(),
-                                    u.email(), null, u.phone(), null, null)).collect(Collectors.toList()));
+                                    u.email(), null, u.phone(), null, null, null)).collect(Collectors.toList()));
 
         }
 

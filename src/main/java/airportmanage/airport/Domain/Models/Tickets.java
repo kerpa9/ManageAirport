@@ -2,6 +2,7 @@ package airportmanage.airport.Domain.Models;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
@@ -9,9 +10,12 @@ import airportmanage.airport.Domain.Enums.TypeClass;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -41,6 +45,11 @@ public class Tickets implements IUserOwnedEntity {
     private Integer seat_number;
     private LocalDateTime created_at;
     private Boolean active;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "passenger")
+    private Passenger passenger;
 
     public void setStatusInactiveTicket() {
         this.active = false;

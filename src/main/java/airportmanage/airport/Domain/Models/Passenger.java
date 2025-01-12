@@ -1,12 +1,16 @@
 package airportmanage.airport.Domain.Models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
 import airportmanage.airport.Domain.Enums.Genre;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,6 +20,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -53,12 +58,17 @@ public class Passenger implements IUserOwnedEntity {
     private String password;
     private String phone;
     private Boolean active;
-    
 
+    // Join users
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "user_id")
     private User user;
+
+    // Join ticket
+    @JsonManagedReference
+    @OneToMany(mappedBy = "tiket", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tickets> tickets = new ArrayList<>();
 
     public void setStatusInactivePassenger() {
         this.active = false;

@@ -49,4 +49,5 @@ public interface PassengerRepositroy extends BaseRepository<Passenger> {
                         @Param("id_passenger") Long id_passenger,
                         @Param("id_login") Long id_login);
 
+
 }

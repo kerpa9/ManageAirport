@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import airportmanage.airport.Domain.Enums.Genre;
@@ -58,7 +57,7 @@ public class User {
     private LocalDateTime token_expiry;
     private Boolean email_verified;
 
-    @JsonIgnore
+    // @JsonIgnore
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Passenger> passengers = new ArrayList<>();

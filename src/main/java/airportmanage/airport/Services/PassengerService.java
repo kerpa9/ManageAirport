@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import airportmanage.airport.Domain.DTOs.PassengerDTO;
 import airportmanage.airport.Domain.Models.Passenger;
-import airportmanage.airport.Domain.Models.User;
 import airportmanage.airport.Repository.PassengerRepositroy;
 import airportmanage.airport.Repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -26,14 +25,13 @@ public class PassengerService {
     @Transactional
     public Passenger createPassenger(@Valid PassengerDTO passengerDTO) {
 
-        
         Passenger passenger = new Passenger();
-        Long loginId = filterLoginService.getUserLogin();
-        
-        Long seqPassenger = passengerRepositroy.generatedInsertSequential(loginId) + 1;
 
-        User user = userRepository.findById(loginId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        var topic = userRepository.findById(passengerDTO.idUser()).get();
+
+        Long loginId = filterLoginService.getUserLogin();
+
+        Long seqPassenger = passengerRepositroy.generatedInsertSequential(loginId) + 1;
 
         passenger.setId_login(loginId);
         passenger.setId_passenger(seqPassenger);
@@ -44,9 +42,8 @@ public class PassengerService {
         passenger.setPhone(passengerDTO.phone());
         passenger.setEmail(passengerDTO.email());
         passenger.setPassword(passengerDTO.password());
+        passenger.setUser(topic);
         passenger.setActive(passengerDTO.active());
-        passenger.setUser(user);
-        ;
 
         return passengerRepositroy.savePassengerWithRoles(passenger);
 
