@@ -1,10 +1,13 @@
 package airportmanage.airport.Services;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import airportmanage.airport.Domain.DTOs.PassengerDTO;
 import airportmanage.airport.Domain.Models.Passenger;
+import airportmanage.airport.Domain.Models.Tickets;
 import airportmanage.airport.Repository.PassengerRepositroy;
 import airportmanage.airport.Repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -27,7 +30,7 @@ public class PassengerService {
 
         Passenger passenger = new Passenger();
 
-        var topic = userRepository.findById(passengerDTO.idUser()).get();
+        var user = userRepository.findById(passengerDTO.idUser()).get();
 
         Long loginId = filterLoginService.getUserLogin();
 
@@ -42,8 +45,13 @@ public class PassengerService {
         passenger.setPhone(passengerDTO.phone());
         passenger.setEmail(passengerDTO.email());
         passenger.setPassword(passengerDTO.password());
-        passenger.setUser(topic);
+        passenger.setUser(user);
         passenger.setActive(passengerDTO.active());
+
+        if (passengerDTO.ticket() != null) {
+            passenger.setTickets(passengerDTO.ticket().stream().map(t->new Tickets(loginId, loginId, seqPassenger, null, null, null, null, null, null)).collect(Collectors.toList()));
+
+        }
 
         return passengerRepositroy.savePassengerWithRoles(passenger);
 

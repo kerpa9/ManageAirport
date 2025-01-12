@@ -67,7 +67,7 @@ public class Passenger implements IUserOwnedEntity {
 
     // Join ticket
     @JsonManagedReference
-    @OneToMany(mappedBy = "tiket", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tickets> tickets = new ArrayList<>();
 
     public void setStatusInactivePassenger() {

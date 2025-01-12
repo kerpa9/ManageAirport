@@ -13,6 +13,7 @@ public record TicketsDTO(
         @NotNull Double price,
         @NotNull Integer seat_number,
         Boolean active,
+        Long idPassenger,
         LocalDateTime created_at) {
 
     public TicketsDTO {

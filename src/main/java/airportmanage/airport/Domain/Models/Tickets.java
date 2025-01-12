@@ -48,7 +48,7 @@ public class Tickets implements IUserOwnedEntity {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "passenger")
+    @JoinColumn(name = "passenger_id")
     private Passenger passenger;
 
     public void setStatusInactiveTicket() {
