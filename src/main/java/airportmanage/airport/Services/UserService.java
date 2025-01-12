@@ -1,11 +1,14 @@
 package airportmanage.airport.Services;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import airportmanage.airport.Config.EmailSender;
 import airportmanage.airport.Domain.DTOs.UserDTO;
 import airportmanage.airport.Domain.Models.Login;
+import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Domain.Models.User;
 import airportmanage.airport.Repository.LoginRepository;
 import airportmanage.airport.Repository.UserRepository;
@@ -24,7 +27,6 @@ public class UserService {
     @Autowired
     private EmailSender emailSender;
 
-
     @Transactional
     public User createUser(@Valid UserDTO userDTO) {
         // Crear el usuario
@@ -38,14 +40,23 @@ public class UserService {
         user.setActive(userDTO.active());
         user.setEmail_verified(false);
         user = repository.save(user);
+
+        if (userDTO.passenger() != null) {
+            user.setPassengers(
+                    userDTO.passenger().stream()
+                            .map(u -> new Passenger(null, null, null, u.first_name(), u.last_name(), null, u.genre(),
+                                    u.email(), null, u.phone(), null, null)).collect(Collectors.toList()));
+
+        }
+
         emailSender.sendValidateEmail(user);
-        
+
         Login login = new Login();
         login.setEmail(userDTO.email());
         login.setPassword(userDTO.password());
         login.setRole_user(userDTO.role_user());
         loginRepository.save(login);
-    
+
         return user;
     }
 

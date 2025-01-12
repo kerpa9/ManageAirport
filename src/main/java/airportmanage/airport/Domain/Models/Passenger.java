@@ -2,6 +2,7 @@ package airportmanage.airport.Domain.Models;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
@@ -9,9 +10,12 @@ import airportmanage.airport.Domain.Enums.Genre;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -49,6 +53,12 @@ public class Passenger implements IUserOwnedEntity {
     private String password;
     private String phone;
     private Boolean active;
+    
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user")
+    private User user;
 
     public void setStatusInactivePassenger() {
         this.active = false;
@@ -60,6 +70,7 @@ public class Passenger implements IUserOwnedEntity {
         return id_login;
     }
 
+    @JsonIgnore
     @Override
     public void setUserId(Long userId) {
         this.id_login = userId;

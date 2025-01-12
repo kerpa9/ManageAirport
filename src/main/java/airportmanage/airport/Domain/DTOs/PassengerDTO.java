@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import airportmanage.airport.Config.Security.HashPassword;
 import airportmanage.airport.Domain.Enums.Genre;
+import airportmanage.airport.Domain.Models.User;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
@@ -17,6 +18,7 @@ public record PassengerDTO(
         @NotNull @Enumerated(EnumType.STRING) Genre genre,
         @NotNull @Email String email,
         @NotNull String password,
+        User user,
         String phone,
         Boolean active) {
 

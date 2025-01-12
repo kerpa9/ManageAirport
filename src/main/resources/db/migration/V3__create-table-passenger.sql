@@ -10,6 +10,7 @@ create table passenger(
         email varchar(100) not null,
         password varchar(100) not null,
         phone varchar(100) not null,
+        user varchar(100),
         active boolean default true,
         INDEX idx_id_login (id_login),
         INDEX idx_id_login_id (id_login, id),

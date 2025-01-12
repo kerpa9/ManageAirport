@@ -1,6 +1,7 @@
 package airportmanage.airport.Domain.DTOs;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import airportmanage.airport.Config.Security.HashPassword;
 import airportmanage.airport.Domain.Enums.Genre;
@@ -25,6 +26,7 @@ public record UserDTO(
         LocalDateTime token_expiry,
         Boolean email_verified,
         Boolean active,
+        List<PassengerDTO> passenger,
         LocalDateTime created_at
 
 ) {
