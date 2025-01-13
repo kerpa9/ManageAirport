@@ -48,7 +48,7 @@ public class UserService {
             user.setPassengers(
                     userDTO.passenger().stream()
                             .map(u -> new Passenger(null, null, null, u.first_name(), u.last_name(), null, u.genre(),
-                                    u.email(), null, u.phone(), null, null, null)).collect(Collectors.toList()));
+                                    u.email(), null, u.phone(), null, null, null, null)).collect(Collectors.toList()));
 
         }
 

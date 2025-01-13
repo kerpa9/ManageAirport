@@ -5,6 +5,7 @@ import java.util.List;
 
 import airportmanage.airport.Config.Security.HashPassword;
 import airportmanage.airport.Domain.Enums.Genre;
+import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Domain.Models.Tickets;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,6 +22,7 @@ public record PassengerDTO(
         @NotNull String password,
         Long idUser,
         List<Tickets> ticket,
+        List<Booking> bookings,
         String phone,
         Boolean active) {
 

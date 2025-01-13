@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import airportmanage.airport.Domain.DTOs.BookingDTO;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Repository.BookingRepository;
+import airportmanage.airport.Repository.PassengerRepositroy;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -18,10 +19,16 @@ public class BookingService {
     @Autowired
     private FilterLoginService filterLoginService;
 
+    @Autowired
+    private PassengerRepositroy passengerRepositroy;
+
     @Transactional
     public Booking createBooking(@Valid BookingDTO bookingDTO) {
 
         Long loginId = filterLoginService.getUserLogin();
+
+        var passenger = passengerRepositroy.findById(bookingDTO.idPassenger()).get();
+
 
         Booking booking = new Booking();
 
@@ -33,6 +40,7 @@ public class BookingService {
         booking.setNro_tickets(bookingDTO.nro_tickets());
         booking.setTotal_price(bookingDTO.total_price());
         booking.setCreated_at(bookingDTO.created_at());
+        booking.setPassenger(passenger);
         booking.setActive(bookingDTO.active());
 
         return bookingRepository.saveBookingWithRoles(booking);

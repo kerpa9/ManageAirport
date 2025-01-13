@@ -13,6 +13,7 @@ public record BookingDTO(
         @NotNull Integer nro_tickets,
         @NotNull Double total_price,
         @NotNull LocalDateTime created_at,
+        Long idPassenger,
         // Integer created_by,
         Boolean active) {
 

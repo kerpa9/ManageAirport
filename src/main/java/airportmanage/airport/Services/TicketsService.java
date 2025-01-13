@@ -28,7 +28,7 @@ public class TicketsService {
 
         Long loginId = filterLoginService.getUserLogin();
 
-        var user = passengerRepositroy.findById(ticketsDTO.idPassenger()).get();
+        var ticket = passengerRepositroy.findById(ticketsDTO.idPassenger()).get();
 
         Long seqTicket = ticketsRepository.generatedInsertSequential(loginId) + 1;
 
@@ -38,7 +38,7 @@ public class TicketsService {
         tickets.setPrice(ticketsDTO.price());
         tickets.setSeat_number(ticketsDTO.seat_number());
         tickets.setCreated_at(ticketsDTO.created_at());
-        tickets.setPassenger(user);
+        tickets.setPassenger(ticket);
         tickets.setActive(ticketsDTO.active());
 
         return ticketsRepository.save(tickets);

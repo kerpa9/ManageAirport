@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import airportmanage.airport.Domain.DTOs.PassengerDTO;
+import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Domain.Models.Tickets;
 import airportmanage.airport.Repository.PassengerRepositroy;
@@ -49,7 +50,14 @@ public class PassengerService {
         passenger.setActive(passengerDTO.active());
 
         if (passengerDTO.ticket() != null) {
-            passenger.setTickets(passengerDTO.ticket().stream().map(t->new Tickets(loginId, loginId, seqPassenger, null, null, null, null, null, null)).collect(Collectors.toList()));
+            passenger.setTickets(passengerDTO.ticket().stream()
+                    .map(t -> new Tickets(loginId, loginId, seqPassenger, null, null, null, null, null, null))
+                    .collect(Collectors.toList()));
+
+        }
+
+        if (passengerDTO.bookings() != null) {
+            passenger.setBookings(passengerDTO.bookings().stream().map(b->new Booking(loginId, loginId, seqPassenger, null, null, null, null, null, passenger)).collect(Collectors.toList()));
 
         }
 

@@ -70,6 +70,10 @@ public class Passenger implements IUserOwnedEntity {
     @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tickets> tickets = new ArrayList<>();
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking> bookings = new ArrayList<>();
+
     public void setStatusInactivePassenger() {
         this.active = false;
 
