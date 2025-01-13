@@ -1,10 +1,13 @@
 package airportmanage.airport.Services;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import airportmanage.airport.Domain.DTOs.CityDTO;
 import airportmanage.airport.Domain.Models.City;
+import airportmanage.airport.Domain.Models.Flight;
 import airportmanage.airport.Repository.CitiesRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -36,8 +39,14 @@ public class CitiesService {
         city.setCreated_at(cityDTO.created_at());
         city.setActive(cityDTO.active());
 
+        if (cityDTO.flights() != null) {
+            city.setDestination(cityDTO.flights().stream()
+                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, null, null))
+                    .collect(Collectors.toList()));
+
+        }
+
         return citiesRepository.saveCityWithRoles(city);
-        
 
     }
 

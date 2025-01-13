@@ -1,14 +1,19 @@
 package airportmanage.airport.Domain.Models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -38,6 +43,15 @@ public class City implements IUserOwnedEntity {
     private Double lon;
     private LocalDateTime created_at;
     private Boolean active;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "origin", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Flight> origin = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Flight> destination = new ArrayList<>();
+
 
     public void setStatusInactiveCity() {
         this.active = false;

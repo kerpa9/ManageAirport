@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record FlightDTO(
         Long id_flight,
-        // Long origin_id,
-        // Long destination_id,
+        Long origin_id,
+        Long destination_id,
         // Long plane_id,
         @NotNull LocalDateTime departure_time,
         @NotNull LocalDateTime check_in,

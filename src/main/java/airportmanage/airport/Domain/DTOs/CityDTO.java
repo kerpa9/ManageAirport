@@ -1,7 +1,9 @@
 package airportmanage.airport.Domain.DTOs;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import airportmanage.airport.Domain.Models.Flight;
 import jakarta.validation.constraints.NotNull;
 
 public record CityDTO(
@@ -12,6 +14,7 @@ public record CityDTO(
         @NotNull Double lat,
         @NotNull Double lon,
         @NotNull LocalDateTime created_at,
+        List<Flight> flights,
         Boolean active
 
 ) {
