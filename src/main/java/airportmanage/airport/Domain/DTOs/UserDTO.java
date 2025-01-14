@@ -17,8 +17,7 @@ public record UserDTO(
 
         Long id,
         @NotBlank String full_name,
-        @NotBlank @Email @Column(unique = true)
-        String email,
+        @NotBlank @Email @Column(unique = true) String email,
         @NotBlank String password,
         @Enumerated(EnumType.STRING) @NotNull Genre genre,
         @NotNull @Enumerated(EnumType.STRING) @NotNull RoleUser role_user,
@@ -27,6 +26,8 @@ public record UserDTO(
         Boolean email_verified,
         Boolean active,
         List<PassengerDTO> passenger,
+        List<TicketsDTO> tickets,
+        List<BookingDTO> booking,
         LocalDateTime created_at
 
 ) {

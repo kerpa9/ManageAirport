@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import airportmanage.airport.Domain.Enums.Genre;
@@ -33,6 +34,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
@@ -58,9 +60,19 @@ public class User {
     private Boolean email_verified;
 
     // @JsonIgnore
-    @JsonManagedReference
+    
+    @JsonManagedReference("user-passengers")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Passenger> passengers = new ArrayList<>();
+    
+    
+    @JsonManagedReference("user-tickets")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tickets> tickets = new ArrayList<>();
+    
+    @JsonManagedReference("user-bookings")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking> bookings = new ArrayList<>();
 
     public void setStatusInactiveUser() {
         this.active = false;

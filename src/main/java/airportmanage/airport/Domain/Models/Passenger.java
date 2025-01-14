@@ -60,17 +60,16 @@ public class Passenger implements IUserOwnedEntity {
     private Boolean active;
 
     // Join users
-    @JsonBackReference
+    @JsonBackReference("user-passengers")  
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Join ticket
-    @JsonManagedReference
+    @JsonManagedReference("passenger-tickets")
     @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tickets> tickets = new ArrayList<>();
 
-    @JsonManagedReference
+    @JsonManagedReference("passenger-bookings")  
     @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<>();
 

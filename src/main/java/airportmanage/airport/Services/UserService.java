@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import airportmanage.airport.Config.EmailSender;
 import airportmanage.airport.Domain.DTOs.UserDTO;
+import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Domain.Models.Login;
 import airportmanage.airport.Domain.Models.Passenger;
+import airportmanage.airport.Domain.Models.Tickets;
 import airportmanage.airport.Domain.Models.User;
 import airportmanage.airport.Repository.LoginRepository;
 import airportmanage.airport.Repository.UserRepository;
@@ -48,6 +50,15 @@ public class UserService {
                             .map(u -> new Passenger(null, null, null, u.first_name(), u.last_name(), null, u.genre(),
                                     u.email(), null, u.phone(), null, null, null, null)).collect(Collectors.toList()));
 
+        }
+
+        if(userDTO.tickets()!=null){
+            user.setTickets(userDTO.tickets().stream().map(t->new Tickets(t.id_ticket(), null, null, null, null, null, null, null, null, null)).collect(Collectors.toList()));
+
+        }
+
+        if(userDTO.booking()!=null){
+            user.setBookings(userDTO.booking().stream().map(b->new Booking(b.id_booking(), null, null, null, b.nro_tickets(), b.total_price(), null, null, null, null)).collect(Collectors.toList()));
         }
 
         emailSender.sendValidateEmail(user);

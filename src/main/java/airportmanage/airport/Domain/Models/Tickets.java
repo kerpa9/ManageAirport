@@ -46,7 +46,13 @@ public class Tickets implements IUserOwnedEntity {
     private LocalDateTime created_at;
     private Boolean active;
 
-    @JsonBackReference
+    
+    @JsonBackReference("user-tickets")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @JsonBackReference("passenger-tickets")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "passenger_id")
     private Passenger passenger;

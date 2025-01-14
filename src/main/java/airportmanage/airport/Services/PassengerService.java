@@ -51,13 +51,15 @@ public class PassengerService {
 
         if (passengerDTO.ticket() != null) {
             passenger.setTickets(passengerDTO.ticket().stream()
-                    .map(t -> new Tickets(loginId, loginId, seqPassenger, null, null, null, null, null, null))
+                    .map(t -> new Tickets(loginId, loginId, seqPassenger, null, null, null, null, null, null, null))
                     .collect(Collectors.toList()));
 
         }
 
         if (passengerDTO.bookings() != null) {
-            passenger.setBookings(passengerDTO.bookings().stream().map(b->new Booking(loginId, loginId, seqPassenger, null, null, null, null, null, passenger)).collect(Collectors.toList()));
+            passenger.setBookings(passengerDTO.bookings().stream()
+                    .map(b -> new Booking(loginId, loginId, seqPassenger, null, null, null, null, null, null, passenger))
+                    .collect(Collectors.toList()));
 
         }
 

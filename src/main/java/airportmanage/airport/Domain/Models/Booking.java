@@ -43,7 +43,13 @@ public class Booking implements IUserOwnedEntity {
     // private Integer created_by;
     private Boolean active;
 
-    @JsonBackReference
+    
+    @JsonBackReference("user-bookings")  
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+    
+    @JsonBackReference("passenger-bookings")  
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "passenger_id")
     private Passenger passenger;
