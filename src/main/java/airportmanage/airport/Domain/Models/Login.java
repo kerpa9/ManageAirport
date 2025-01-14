@@ -33,12 +33,8 @@ public class Login implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // @NotNull
-    // @Email
     private String email;
-    // @NotNull
     private String password;
-    // @NotNull
     @Enumerated(EnumType.STRING)
     private RoleUser role_user;
 
