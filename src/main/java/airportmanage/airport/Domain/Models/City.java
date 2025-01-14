@@ -44,11 +44,11 @@ public class City implements IUserOwnedEntity {
     private LocalDateTime created_at;
     private Boolean active;
 
-    @JsonManagedReference
+    @JsonManagedReference("city-origin-flights")
     @OneToMany(mappedBy = "origin", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flight> origin = new ArrayList<>();
-
-    @JsonManagedReference
+    
+    @JsonManagedReference("city-destination-flights")
     @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flight> destination = new ArrayList<>();
 

@@ -14,7 +14,8 @@ public record CityDTO(
         @NotNull Double lat,
         @NotNull Double lon,
         @NotNull LocalDateTime created_at,
-        List<Flight> flights,
+        List<Flight> origin,
+        List<Flight> destination,
         Boolean active
 
 ) {

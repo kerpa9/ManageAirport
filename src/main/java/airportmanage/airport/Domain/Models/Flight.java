@@ -42,12 +42,12 @@ public class Flight implements IUserOwnedEntity {
     private LocalDateTime created_at;
     private Boolean active;
 
-    @JsonBackReference
+    @JsonBackReference("city-origin-flights")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "origin_id")
     private City origin;
-
-    @JsonBackReference
+    
+    @JsonBackReference("city-destination-flights")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "destination_id")
     private City destination;

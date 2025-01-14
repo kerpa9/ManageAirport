@@ -39,11 +39,25 @@ public class CitiesService {
         city.setCreated_at(cityDTO.created_at());
         city.setActive(cityDTO.active());
 
-        if (cityDTO.flights() != null) {
-            city.setDestination(cityDTO.flights().stream()
-                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, null, null))
+        city.setId_login(loginId);
+        city.setId_city(seqCity);
+        city.setName(cityDTO.name());
+        city.setCountry(cityDTO.country());
+        city.setLat(cityDTO.lat());
+        city.setLon(cityDTO.lon());
+        city.setCreated_at(cityDTO.created_at());
+        city.setActive(cityDTO.active());
+    
+        if (cityDTO.destination() != null) {
+            city.setDestination(cityDTO.destination().stream()
+                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, city, null))
                     .collect(Collectors.toList()));
-
+        }
+    
+        if (cityDTO.origin() != null) {
+            city.setOrigin(cityDTO.origin().stream()
+                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, null, city))
+                    .collect(Collectors.toList()));
         }
 
         return citiesRepository.saveCityWithRoles(city);
