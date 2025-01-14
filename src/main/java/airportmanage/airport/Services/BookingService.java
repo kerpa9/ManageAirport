@@ -7,6 +7,7 @@ import airportmanage.airport.Domain.DTOs.BookingDTO;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Repository.BookingRepository;
 import airportmanage.airport.Repository.PassengerRepositroy;
+import airportmanage.airport.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -22,13 +23,17 @@ public class BookingService {
     @Autowired
     private PassengerRepositroy passengerRepositroy;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Transactional
     public Booking createBooking(@Valid BookingDTO bookingDTO) {
 
         Long loginId = filterLoginService.getUserLogin();
 
-        var passenger = passengerRepositroy.findById(bookingDTO.idPassenger()).get();
+        var user = userRepository.findById(bookingDTO.idUser()).get();
 
+        var passenger = passengerRepositroy.findById(bookingDTO.idPassenger()).get();
 
         Booking booking = new Booking();
 
@@ -41,6 +46,7 @@ public class BookingService {
         booking.setTotal_price(bookingDTO.total_price());
         booking.setCreated_at(bookingDTO.created_at());
         booking.setPassenger(passenger);
+        booking.setUser(user);
         booking.setActive(bookingDTO.active());
 
         return bookingRepository.saveBookingWithRoles(booking);

@@ -7,6 +7,7 @@ import airportmanage.airport.Domain.DTOs.TicketsDTO;
 import airportmanage.airport.Domain.Models.Tickets;
 import airportmanage.airport.Repository.PassengerRepositroy;
 import airportmanage.airport.Repository.TicketsRepository;
+import airportmanage.airport.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -22,11 +23,16 @@ public class TicketsService {
     @Autowired
     private PassengerRepositroy passengerRepositroy;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Transactional
     public Tickets createTickets(@Valid TicketsDTO ticketsDTO) {
         Tickets tickets = new Tickets();
 
         Long loginId = filterLoginService.getUserLogin();
+
+        var user = userRepository.findById(ticketsDTO.idUser()).get();
 
         var ticket = passengerRepositroy.findById(ticketsDTO.idPassenger()).get();
 
@@ -39,6 +45,7 @@ public class TicketsService {
         tickets.setSeat_number(ticketsDTO.seat_number());
         tickets.setCreated_at(ticketsDTO.created_at());
         tickets.setPassenger(ticket);
+        ticket.setUser(user);
         tickets.setActive(ticketsDTO.active());
 
         return ticketsRepository.save(tickets);
