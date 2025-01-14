@@ -2,7 +2,6 @@ package airportmanage.airport.Services;
 
 import java.util.stream.Collectors;
 
-// import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import airportmanage.airport.Config.EmailSender;
 import airportmanage.airport.Domain.DTOs.UserDTO;
 import airportmanage.airport.Domain.Models.Login;
 import airportmanage.airport.Domain.Models.Passenger;
-// import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Domain.Models.User;
 import airportmanage.airport.Repository.LoginRepository;
 import airportmanage.airport.Repository.UserRepository;
@@ -32,7 +30,7 @@ public class UserService {
 
     @Transactional
     public User createUser(@Valid UserDTO userDTO) {
-        // Crear el usuario
+        // Create user
         User user = new User();
         user.setFull_name(userDTO.full_name());
         user.setEmail(userDTO.email());
@@ -53,6 +51,7 @@ public class UserService {
         }
 
         emailSender.sendValidateEmail(user);
+        // Put in database login data
 
         Login login = new Login();
         login.setEmail(userDTO.email());
