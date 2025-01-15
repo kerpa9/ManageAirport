@@ -28,14 +28,15 @@ public class TicketsService {
 
     @Transactional
     public Tickets createTickets(@Valid TicketsDTO ticketsDTO) {
-        Tickets tickets = new Tickets();
-
+        
         Long loginId = filterLoginService.getUserLogin();
-
+        
         var user = userRepository.findById(ticketsDTO.idUser()).get();
-
-        var ticket = passengerRepositroy.findById(ticketsDTO.idPassenger()).get();
-
+        
+        var passenger = passengerRepositroy.findById(ticketsDTO.idPassenger()).get();
+        
+        Tickets tickets = new Tickets();
+        
         Long seqTicket = ticketsRepository.generatedInsertSequential(loginId) + 1;
 
         tickets.setId_login(loginId);
@@ -44,8 +45,8 @@ public class TicketsService {
         tickets.setPrice(ticketsDTO.price());
         tickets.setSeat_number(ticketsDTO.seat_number());
         tickets.setCreated_at(ticketsDTO.created_at());
-        tickets.setPassenger(ticket);
-        ticket.setUser(user);
+        tickets.setPassenger(passenger);
+        tickets.setUser(user);;
         tickets.setActive(ticketsDTO.active());
 
         return ticketsRepository.save(tickets);

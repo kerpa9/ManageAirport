@@ -12,10 +12,10 @@ public record TicketsDTO(
         @NotNull @Enumerated(EnumType.STRING) TypeClass type_class,
         @NotNull Double price,
         @NotNull Integer seat_number,
-        Boolean active,
         Long idUser,
         Long idPassenger,
-        LocalDateTime created_at) {
+        LocalDateTime created_at,
+        Boolean active) {
 
     public TicketsDTO {
         active = active == null ? true : active;
