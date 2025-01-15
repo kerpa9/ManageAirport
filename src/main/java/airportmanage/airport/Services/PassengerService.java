@@ -3,6 +3,9 @@ package airportmanage.airport.Services;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import airportmanage.airport.Domain.DTOs.PassengerDTO;
@@ -58,12 +61,22 @@ public class PassengerService {
 
         if (passengerDTO.bookings() != null) {
             passenger.setBookings(passengerDTO.bookings().stream()
-                    .map(b -> new Booking(loginId, loginId, seqPassenger, null, null, null, null, null, null, passenger))
+                    .map(b -> new Booking(loginId, loginId, seqPassenger, null, null, null, null, null, null,
+                            passenger))
                     .collect(Collectors.toList()));
 
         }
 
         return passengerRepositroy.savePassengerWithRoles(passenger);
+
+    }
+
+    @Transactional
+    public Page<Passenger> getAll(Pageable pageable) {
+
+        Long userLogin = filterLoginService.getUserLogin();
+
+        return passengerRepositroy.findAllActive(userLogin, pageable);
 
     }
 }

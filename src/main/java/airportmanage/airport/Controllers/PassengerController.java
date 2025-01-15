@@ -1,13 +1,18 @@
 package airportmanage.airport.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import airportmanage.airport.Domain.DTOs.PageableDTO;
 import airportmanage.airport.Domain.DTOs.PassengerDTO;
 import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Services.PassengerService;
@@ -33,6 +38,19 @@ public class PassengerController {
                     .body(null);
 
         }
+
+    }
+
+    @SuppressWarnings("rawtypes")
+    @GetMapping
+    public ResponseEntity<PageableDTO> getall(@PageableDefault(size = 5) Pageable pageable) {
+
+        Page<Passenger> passenger = passengerService.getAll(pageable);
+
+        Page<PassengerDTO> passengerDTO = passenger
+                .map(p -> new PassengerDTO(p.getId(), p.getFirst_name(), p.getLast_name(), null, null, p.getEmail(), null, null, p.getTickets(), p.getBookings(), null, null));
+
+        return ResponseEntity.ok(PageableDTO.fromPage(passengerDTO));
 
     }
 
