@@ -33,7 +33,7 @@ public class FlightService {
 
         Long loginId = filterLoginService.getUserLogin();
 
-        var plane = planeRepository.findById(flightDTO.origin_id()).get();
+        var plane = planeRepository.findById(flightDTO.idPlane()).get();
 
         var origin = citiesRepository.findById(flightDTO.origin_id()).get();
 
