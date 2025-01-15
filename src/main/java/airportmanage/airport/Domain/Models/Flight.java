@@ -34,8 +34,6 @@ public class Flight implements IUserOwnedEntity {
     private Long id;
     private Long id_login;
     private Long id_flight;
-    // private Long origin_id;
-    // private Long destination_id;
     // private Long plane_id;
     private LocalDateTime departure_time;
     private LocalDateTime check_in;
@@ -51,6 +49,11 @@ public class Flight implements IUserOwnedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "destination_id")
     private City destination;
+
+    @JsonBackReference("plane-flight")  
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plane_id")
+    private Plane plane;
 
     public void setStatusInactiveFlight() {
         this.active = false;

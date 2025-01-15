@@ -9,7 +9,7 @@ create table passenger(
         born_date DATETIME DEFAULT CURRENT_TIMESTAMP,
         genre VARCHAR(50) NOT NULL CHECK (genre IN ("male", "female", "prefer_not_to_say")),
         email varchar(100) not null,
-        password varchar(100) not null,
+        password varchar(100),
         phone varchar(100) not null,
         user varchar(100),
         active boolean default true,

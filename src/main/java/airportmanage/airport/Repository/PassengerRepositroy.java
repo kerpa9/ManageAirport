@@ -28,10 +28,18 @@ public interface PassengerRepositroy extends BaseRepository<Passenger> {
         @Query("SELECT COALESCE(MAX(p.id_passenger), 0) FROM Passenger p WHERE p.id_login = :id_login")
         Long generatedInsertSequential(@Param("id_login") Long id_login);
 
+        // @Query("""
+        //                     select p from Passenger p where p.active = true and p.id_login=:id
+        //                 """)
+        // Page<Passenger> findAllActive(Long id, Pageable pageable);
+
         @Query("""
-                            select p from Passenger p where p.active = true and p.id_login=:id
-                        """)
-        Page<Passenger> findAllActive(Long id, Pageable pageable);
+                SELECT p FROM Passenger p 
+                WHERE p.active = true 
+                AND p.id_login = :id
+                ORDER BY p.id_passenger
+            """)
+            Page<Passenger> findAllActive(@Param("id") Long id, Pageable pageable);
 
         @Query("""
                         select p from Passenger p

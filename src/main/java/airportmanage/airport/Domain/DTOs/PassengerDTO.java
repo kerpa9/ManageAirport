@@ -19,7 +19,7 @@ public record PassengerDTO(
         LocalDateTime born_date,
         @NotNull @Enumerated(EnumType.STRING) Genre genre,
         @NotNull @Email String email,
-        @NotNull String password,
+         String password,
         Long idUser,
         List<Tickets> ticket,
         List<Booking> bookings,

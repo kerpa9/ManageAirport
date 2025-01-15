@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import airportmanage.airport.Domain.DTOs.PassengerDTO;
 import airportmanage.airport.Domain.Models.Booking;
@@ -14,7 +15,6 @@ import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Domain.Models.Tickets;
 import airportmanage.airport.Repository.PassengerRepositroy;
 import airportmanage.airport.Repository.UserRepository;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @Service
@@ -54,15 +54,15 @@ public class PassengerService {
 
         if (passengerDTO.ticket() != null) {
             passenger.setTickets(passengerDTO.ticket().stream()
-                    .map(t -> new Tickets(loginId, loginId, seqPassenger, null, null, null, null, null, null, null))
+                    .map(t -> new Tickets(null, null, null, null, null, null, null, null, null, null))
                     .collect(Collectors.toList()));
 
         }
 
         if (passengerDTO.bookings() != null) {
             passenger.setBookings(passengerDTO.bookings().stream()
-                    .map(b -> new Booking(loginId, loginId, seqPassenger, null, null, null, null, null, null,
-                            passenger))
+                    .map(b -> new Booking(null, null, null, null, null, null, null, null, null,
+                            null))
                     .collect(Collectors.toList()));
 
         }
@@ -71,12 +71,17 @@ public class PassengerService {
 
     }
 
-    @Transactional
-    public Page<Passenger> getAll(Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<Passenger> getAllPassengers(Pageable pageable) {
+        if (pageable == null) {
+            throw new IllegalArgumentException("Pageable parameter cannot be null");
+        }
 
         Long userLogin = filterLoginService.getUserLogin();
+        if (userLogin == null) {
+            throw new SecurityException("No authenticated user found");
+        }
 
         return passengerRepositroy.findAllActive(userLogin, pageable);
-
     }
 }

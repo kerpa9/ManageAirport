@@ -1,17 +1,22 @@
 package airportmanage.airport.Domain.Models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
 import airportmanage.airport.Domain.Enums.Airline;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -39,9 +44,13 @@ public class Plane implements IUserOwnedEntity {
     private String model;
     private Integer max_capacity;
     @Enumerated(EnumType.STRING)
-    private Airline airline;
+    private Airline airline; 
     private LocalDateTime created_at;
     private Boolean active;
+
+    @JsonManagedReference("plane-flight")
+    @OneToMany(mappedBy = "plane", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Flight> flight = new ArrayList<>();
 
     public void setStatusInactivePlane() {
         this.active = false;

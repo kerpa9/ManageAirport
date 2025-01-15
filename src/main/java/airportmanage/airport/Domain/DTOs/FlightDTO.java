@@ -8,7 +8,7 @@ public record FlightDTO(
         Long id_flight,
         Long origin_id,
         Long destination_id,
-        // Long plane_id,
+        Long idPlane,
         @NotNull LocalDateTime departure_time,
         @NotNull LocalDateTime check_in,
         @NotNull LocalDateTime created_at,

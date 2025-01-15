@@ -5,10 +5,12 @@ create table flight(
         id_flight bigint,
         origin_id bigint,
         destination_id bigint,
+        plane_id bigint,
         departure_time DATETIME DEFAULT CURRENT_TIMESTAMP,
         check_in DATETIME DEFAULT CURRENT_TIMESTAMP,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         city varchar(200),
+        plane varchar(200),
         active boolean default true,
         INDEX idx_id_login (id_login),
         INDEX idx_id_login_id (id_login, id),
@@ -17,6 +19,8 @@ create table flight(
         constraint fk_flight_city_id foreign key (origin_id) references city (id),
 
         constraint fk_flight_city_id foreign key (destination_id) references city (id),
+
+        constraint fk_flight_plane_id foreign key (plane_id) references plane (id),
         
 
         primary key(id)

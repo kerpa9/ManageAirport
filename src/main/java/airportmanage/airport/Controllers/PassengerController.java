@@ -20,6 +20,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/passenger")
+
 public class PassengerController {
     @Autowired
     private PassengerService passengerService;
@@ -43,12 +44,14 @@ public class PassengerController {
 
     @SuppressWarnings("rawtypes")
     @GetMapping
-    public ResponseEntity<PageableDTO> getall(@PageableDefault(size = 5) Pageable pageable) {
+    private ResponseEntity<PageableDTO> getallPassengers(@PageableDefault(size = 5) Pageable pageable) {
 
-        Page<Passenger> passenger = passengerService.getAll(pageable);
+        Page<Passenger> passenger = passengerService.getAllPassengers(pageable);
 
         Page<PassengerDTO> passengerDTO = passenger
-                .map(p -> new PassengerDTO(p.getId(), p.getFirst_name(), p.getLast_name(), null, null, p.getEmail(), null, null, p.getTickets(), p.getBookings(), null, null));
+                .map(p -> new PassengerDTO(p.getId(), p.getFirst_name(), p.getLast_name(), p.getBorn_date(),
+                        p.getGenre(), p.getEmail(), p.getPassword(), p.getUserId(), p.getTickets(), p.getBookings(),
+                        p.getPhone(), p.getActive()));
 
         return ResponseEntity.ok(PageableDTO.fromPage(passengerDTO));
 

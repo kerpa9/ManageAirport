@@ -7,6 +7,7 @@ import airportmanage.airport.Domain.DTOs.FlightDTO;
 import airportmanage.airport.Domain.Models.Flight;
 import airportmanage.airport.Repository.CitiesRepository;
 import airportmanage.airport.Repository.FlightRepository;
+import airportmanage.airport.Repository.PlaneRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -22,12 +23,17 @@ public class FlightService {
     @Autowired
     private CitiesRepository citiesRepository;
 
+    @Autowired
+    private PlaneRepository planeRepository;
+
     @Transactional
     public Flight createFlight(@Valid FlightDTO flightDTO) {
 
         Flight flight = new Flight();
 
         Long loginId = filterLoginService.getUserLogin();
+
+        var plane = planeRepository.findById(flightDTO.origin_id()).get();
 
         var origin = citiesRepository.findById(flightDTO.origin_id()).get();
 
@@ -42,6 +48,7 @@ public class FlightService {
         flight.setCreated_at(flightDTO.created_at());
         flight.setOrigin(origin);
         flight.setDestination(destination);
+        flight.setPlane(plane);
         flight.setActive(flightDTO.active());
 
         return flightRepository.saveFlightWithRoles(flight);
