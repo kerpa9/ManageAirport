@@ -1,5 +1,6 @@
 package airportmanage.airport.Services;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class CitiesService {
                     .collect(Collectors.toList()));
         }
 
-        return citiesRepository.saveCityWithRoles(city);
+        return citiesRepository.saveCity(city);
 
     }
 
@@ -84,8 +85,8 @@ public class CitiesService {
 
 
     @Transactional
-    public City getOneByID(Long id){
-        return citiesRepository.findByIdUserLogin(id, filterLoginService.getUserLogin());
+    public Optional<City> getOneByID(Long id){
+        return citiesRepository.findActiveCityById(id, filterLoginService.getUserLogin());
 
     }
 }

@@ -1,5 +1,7 @@
 package airportmanage.airport.Services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import airportmanage.airport.Domain.DTOs.TicketsDTO;
 import airportmanage.airport.Domain.Models.Tickets;
-import airportmanage.airport.Repository.PassengerRepositroy;
+import airportmanage.airport.Repository.PassengerRepository;
 import airportmanage.airport.Repository.TicketsRepository;
 import airportmanage.airport.Repository.UserRepository;
 import jakarta.validation.Valid;
@@ -23,7 +25,7 @@ public class TicketsService {
     private FilterLoginService filterLoginService;
 
     @Autowired
-    private PassengerRepositroy passengerRepositroy;
+    private PassengerRepository passengerRepositroy;
 
     @Autowired
     private UserRepository userRepository;
@@ -52,7 +54,8 @@ public class TicketsService {
         ;
         tickets.setActive(ticketsDTO.active());
 
-        return ticketsRepository.save(tickets);
+        return ticketsRepository.saveTicket(tickets);
+
 
     }
 
@@ -71,8 +74,8 @@ public class TicketsService {
     }
 
     @Transactional
-    public Tickets getOneTicket(Long id) {
-        return ticketsRepository.findByIdUserLogin(id, filterLoginService.getUserLogin());
+    public Optional<Tickets> getOneTicket(Long id) {
+        return ticketsRepository.findActiveTicketById(id, filterLoginService.getUserLogin());
     }
 
 }

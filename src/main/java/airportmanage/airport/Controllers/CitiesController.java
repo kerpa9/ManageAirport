@@ -1,5 +1,7 @@
 package airportmanage.airport.Controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,7 +60,7 @@ public class CitiesController {
     }
 
     @GetMapping("/{id}")
-    public City getById(@PathVariable @Valid Long id) {
+    public Optional<City> getById(@PathVariable @Valid Long id) {
         return citiesService.getOneByID(id);
     }
 

@@ -1,5 +1,6 @@
 package airportmanage.airport.Services;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import airportmanage.airport.Domain.DTOs.PassengerDTO;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Domain.Models.Tickets;
-import airportmanage.airport.Repository.PassengerRepositroy;
+import airportmanage.airport.Repository.PassengerRepository;
 import airportmanage.airport.Repository.UserRepository;
 import jakarta.validation.Valid;
 
@@ -20,7 +21,7 @@ import jakarta.validation.Valid;
 public class PassengerService {
 
     @Autowired
-    private PassengerRepositroy passengerRepositroy;
+    private PassengerRepository passengerRepositroy;
 
     @Autowired
     private FilterLoginService filterLoginService;
@@ -66,7 +67,7 @@ public class PassengerService {
 
         }
 
-        return passengerRepositroy.savePassengerWithRoles(passenger);
+        return passengerRepositroy.savePassenger(passenger);
 
     }
 
@@ -85,7 +86,7 @@ public class PassengerService {
     }
 
     @Transactional
-    public Passenger getOneById(Long id) {
-        return passengerRepositroy.findByIdUserLogin(id, filterLoginService.getUserLogin());
+    public Optional<Passenger> getOneById(Long id) {
+        return passengerRepositroy.findActivePassengerById(id, filterLoginService.getUserLogin());
     }
 }

@@ -1,8 +1,8 @@
 package airportmanage.airport.Repository;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,38 +15,50 @@ import airportmanage.airport.Repository.BaseRepository.BaseRepository;
 
 public interface FlightRepository extends BaseRepository<Flight> {
 
-        default Flight saveFlightWithRoles(Flight flight) {
-                return saveWithRoleValidation(flight, EnumSet.of(RoleUser.admin, RoleUser.receptionist));
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLES = EnumSet.of(RoleUser.admin, RoleUser.receptionist);
+
+        @Override
+        default Flight createDummyEntity(Long loginId) {
+                Flight dummy = new Flight();
+                dummy.setId_login(loginId);
+                return dummy;
         }
 
-        @Override
-        Optional<Flight> findByIdAndIdLogin(Long id, Long id_login);
+        default Flight saveFlight(Flight flight) {
+                return saveWithRoleValidation(flight, DEFAULT_AUTHORIZED_ROLES);
+        }
 
-        @Override
-        List<Flight> findAllByIdLogin(Long id_login);
+        default Page<Flight> findAllActiveFlight(Long loginId, Pageable pageable) {
+                return genericValidateFunction(
+                                createDummyEntity(loginId),
+                                DEFAULT_AUTHORIZED_ROLES,
+                                p -> findAllActive(loginId, pageable),
+                                "READ_ACTIVE");
+        }
 
-        @Query("SELECT COALESCE(MAX(f.id_flight), 0) FROM Flight f WHERE f.id_login = :id_login")
-        Long generatedInsertSequential(@Param("id_login") Long id_login);
+        default Optional<Flight> findActiveFlightById(Long id, Long loginId) {
+                return genericValidateFunction(
+                                createDummyEntity(loginId),
+                                DEFAULT_AUTHORIZED_ROLES,
+                                p -> Optional.ofNullable(findByIdActive(id)),
+                                "READ_BY_ID");
+        }
 
         @Query("""
-                            select f from Flight f where f.active = true and f.id_login=:id
+                            SELECT p FROM Flight p
+                            WHERE p.active = true
+                            AND p.id_login = :id
+                            ORDER BY p.id_flight
                         """)
-        Page<Flight> findAllActive(Long id, Pageable pageable);
+        Page<Flight> findAllActive(@Param("id") Long id, Pageable pageable);
 
         @Query("""
-                        select f from Flight f
-                        where
-                        f.active=TRUE
-                        and
-                        f.id= :id
+                            SELECT p FROM Flight p
+                            WHERE p.active = true
+                            AND p.id = :id
                         """)
         Flight findByIdActive(@Param("id") Long id);
 
-        @Query("""
-                        select f from Flight f where f.active=TRUE
-                        and f.id_login = :id_login and f.id_flight = :id_flight""")
-        Flight findByIdUserLogin(
-                        @Param("id_flight") Long id_flight,
-                        @Param("id_login") Long id_login);
-
+        @Query("SELECT COALESCE(MAX(p.id_flight), 0) FROM Flight p WHERE p.id_login = :id_login")
+        Long generatedInsertSequential(@Param("id_login") Long id_login);
 }

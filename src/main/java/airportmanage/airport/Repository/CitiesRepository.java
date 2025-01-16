@@ -1,8 +1,8 @@
 package airportmanage.airport.Repository;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,39 +15,53 @@ import airportmanage.airport.Repository.BaseRepository.BaseRepository;
 
 public interface CitiesRepository extends BaseRepository<City> {
 
-        default City saveCityWithRoles(City city) {
-                return saveWithRoleValidation(city,
-                                EnumSet.of(RoleUser.admin));
-        }
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLES = 
+        EnumSet.of(RoleUser.admin, RoleUser.receptionist);
 
-        @Override
-        Optional<City> findByIdAndIdLogin(Long id, Long id_login);
+    @Override
+    default City createDummyEntity(Long loginId) {
+        City dummy = new City();
+        dummy.setId_login(loginId);
+        return dummy;
+    }
 
-        @Override
-        List<City> findAllByIdLogin(Long id_login);
+    default City saveCity(City city) {
+        return saveWithRoleValidation(city, DEFAULT_AUTHORIZED_ROLES);
+    }
 
-        @Query("SELECT COALESCE(MAX(c.id_city), 0) FROM City c WHERE c.id_login = :id_login")
-        Long generatedInsertSequential(@Param("id_login") Long id_login);
+    default Page<City> findAllActiveCity(Long loginId, Pageable pageable) {
+        return genericValidateFunction(
+            createDummyEntity(loginId),
+            DEFAULT_AUTHORIZED_ROLES,
+            p -> findAllActive(loginId, pageable),
+            "READ_ACTIVE"
+        );
+    }
 
-        @Query("""
-                            select c from City c where c.active = true and c.id_login=:id
-                        """)
-        Page<City> findAllActive(Long id, Pageable pageable);
+    default Optional<City> findActiveCityById(Long id, Long loginId) {
+        return genericValidateFunction(
+            createDummyEntity(loginId),
+            DEFAULT_AUTHORIZED_ROLES,
+            p -> Optional.ofNullable(findByIdActive(id)),
+            "READ_BY_ID"
+        );
+    }
 
-        @Query("""
-                        select c from City c
-                        where
-                        c.active=TRUE
-                        and
-                        c.id= :id
-                        """)
-        City findByIdActive(@Param("id") Long id);
+    @Query("""
+        SELECT p FROM City p
+        WHERE p.active = true
+        AND p.id_login = :id
+        ORDER BY p.id_city
+    """)
+    Page<City> findAllActive(@Param("id") Long id, Pageable pageable);
 
-        @Query("""
-                        select c from City c where c.active=TRUE
-                        and c.id_login = :id_login and c.id_city = :id_city""")
-        City findByIdUserLogin(
-                        @Param("id_city") Long id_city,
-                        @Param("id_login") Long id_login);
+    @Query("""
+        SELECT p FROM City p
+        WHERE p.active = true
+        AND p.id = :id
+    """)
+    City findByIdActive(@Param("id") Long id);
 
+    @Query("SELECT COALESCE(MAX(p.id_city), 0) FROM City p WHERE p.id_login = :id_login")
+    Long generatedInsertSequential(@Param("id_login") Long id_login);
 }

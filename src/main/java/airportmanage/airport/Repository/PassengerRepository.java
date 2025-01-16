@@ -10,26 +10,26 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import airportmanage.airport.Domain.Enums.RoleUser;
-import airportmanage.airport.Domain.Models.Booking;
+import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Repository.BaseRepository.BaseRepository;
 
-public interface BookingRepository extends BaseRepository<Booking> {
+public interface PassengerRepository extends BaseRepository<Passenger> {
     
         static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLES = 
             EnumSet.of(RoleUser.admin, RoleUser.receptionist);
     
         @Override
-        default Booking createDummyEntity(Long loginId) {
-            Booking dummy = new Booking();
+        default Passenger createDummyEntity(Long loginId) {
+            Passenger dummy = new Passenger();
             dummy.setId_login(loginId);
             return dummy;
         }
     
-        default Booking saveBooking(Booking booking) {
-            return saveWithRoleValidation(booking, DEFAULT_AUTHORIZED_ROLES);
+        default Passenger savePassenger(Passenger passenger) {
+            return saveWithRoleValidation(passenger, DEFAULT_AUTHORIZED_ROLES);
         }
     
-        default Page<Booking> findAllActivePassengers(Long loginId, Pageable pageable) {
+        default Page<Passenger> findAllActivePassengers(Long loginId, Pageable pageable) {
             return genericValidateFunction(
                 createDummyEntity(loginId),
                 DEFAULT_AUTHORIZED_ROLES,
@@ -38,7 +38,7 @@ public interface BookingRepository extends BaseRepository<Booking> {
             );
         }
     
-        default Optional<Booking> findActivePassengerById(Long id, Long loginId) {
+        default Optional<Passenger> findActivePassengerById(Long id, Long loginId) {
             return genericValidateFunction(
                 createDummyEntity(loginId),
                 DEFAULT_AUTHORIZED_ROLES,
@@ -48,20 +48,21 @@ public interface BookingRepository extends BaseRepository<Booking> {
         }
     
         @Query("""
-            SELECT p FROM Booking p
+            SELECT p FROM Passenger p
             WHERE p.active = true
             AND p.id_login = :id
-            ORDER BY p.id_booking
+            ORDER BY p.id_passenger
         """)
-        Page<Booking> findAllActive(@Param("id") Long id, Pageable pageable);
+        Page<Passenger> findAllActive(@Param("id") Long id, Pageable pageable);
     
         @Query("""
-            SELECT p FROM Booking p
+            SELECT p FROM Passenger p
             WHERE p.active = true
             AND p.id = :id
         """)
-        Booking findByIdActive(@Param("id") Long id);
+        Passenger findByIdActive(@Param("id") Long id);
     
-        @Query("SELECT COALESCE(MAX(p.id_booking), 0) FROM Booking p WHERE p.id_login = :id_login")
+        @Query("SELECT COALESCE(MAX(p.id_passenger), 0) FROM Passenger p WHERE p.id_login = :id_login")
         Long generatedInsertSequential(@Param("id_login") Long id_login);
     }
+    

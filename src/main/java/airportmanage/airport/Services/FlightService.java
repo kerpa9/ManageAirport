@@ -1,5 +1,7 @@
 package airportmanage.airport.Services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -54,7 +56,7 @@ public class FlightService {
         flight.setPlane(plane);
         flight.setActive(flightDTO.active());
 
-        return flightRepository.saveFlightWithRoles(flight);
+        return flightRepository.saveFlight(flight);
 
     }
 
@@ -74,8 +76,8 @@ public class FlightService {
     }
 
     @Transactional
-    public Flight getOneById(Long id) {
-        return flightRepository.findByIdUserLogin(id, filterLoginService.getUserLogin());
+    public Optional<Flight> getOneById(Long id) {
+        return flightRepository.findActiveFlightById(id, filterLoginService.getUserLogin());
     }
 
 }

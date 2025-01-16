@@ -1,5 +1,6 @@
 package airportmanage.airport.Services;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class PlaneService {
                     .collect(Collectors.toList()));
         }
 
-        return planeRepository.savePlaneWithRole(plane);
+        return planeRepository.savePlane(plane);
 
     }
 
@@ -67,8 +68,8 @@ public class PlaneService {
     }
 
     @Transactional
-    public Plane getOnePlane(Long id) {
-        return planeRepository.findByIdUserLogin(id, filterLoginService.getUserLogin());
+    public Optional<Plane> getOnePlane(Long id) {
+        return planeRepository.findActivePlaneById(id, filterLoginService.getUserLogin());
     }
 
 }

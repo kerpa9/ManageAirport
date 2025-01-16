@@ -1,8 +1,8 @@
 package airportmanage.airport.Repository;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,39 +15,50 @@ import airportmanage.airport.Repository.BaseRepository.BaseRepository;
 
 public interface TicketsRepository extends BaseRepository<Tickets> {
 
-        default Tickets saveTicketsWithRoles(Tickets tickets) {
-                return saveWithRoleValidation(tickets,
-                                EnumSet.of(RoleUser.admin, RoleUser.receptionist));
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLES = EnumSet.of(RoleUser.admin, RoleUser.receptionist);
+
+        @Override
+        default Tickets createDummyEntity(Long loginId) {
+                Tickets dummy = new Tickets();
+                dummy.setId_login(loginId);
+                return dummy;
         }
 
-        @Override
-        Optional<Tickets> findByIdAndIdLogin(Long id, Long id_login);
+        default Tickets saveTicket(Tickets tickets) {
+                return saveWithRoleValidation(tickets, DEFAULT_AUTHORIZED_ROLES);
+        }
 
-        @Override
-        List<Tickets> findAllByIdLogin(Long id_login);
+        default Page<Tickets> findAllActiveTicket(Long loginId, Pageable pageable) {
+                return genericValidateFunction(
+                                createDummyEntity(loginId),
+                                DEFAULT_AUTHORIZED_ROLES,
+                                p -> findAllActive(loginId, pageable),
+                                "READ_ACTIVE");
+        }
 
-        @Query("SELECT COALESCE(MAX(t.id_ticket), 0) FROM Tickets t WHERE t.id_login = :id_login")
-        Long generatedInsertSequential(@Param("id_login") Long id_login);
+        default Optional<Tickets> findActiveTicketById(Long id, Long loginId) {
+                return genericValidateFunction(
+                                createDummyEntity(loginId),
+                                DEFAULT_AUTHORIZED_ROLES,
+                                p -> Optional.ofNullable(findByIdActive(id)),
+                                "READ_BY_ID");
+        }
 
         @Query("""
-                            select t from Tickets t where t.active = true and t.id_login=:id
+                            SELECT p FROM Tickets p
+                            WHERE p.active = true
+                            AND p.id_login = :id
+                            ORDER BY p.id_ticket
                         """)
-        Page<Tickets> findAllActive(Long id, Pageable pageable);
+        Page<Tickets> findAllActive(@Param("id") Long id, Pageable pageable);
 
         @Query("""
-                        select t from Tickets t
-                        where
-                        t.active=TRUE
-                        and
-                        t.id= :id
+                            SELECT p FROM Tickets p
+                            WHERE p.active = true
+                            AND p.id = :id
                         """)
         Tickets findByIdActive(@Param("id") Long id);
 
-        @Query("""
-                        select t from Tickets t where t.active=TRUE
-                        and t.id_login = :id_login and t.id_ticket = :id_ticket""")
-        Tickets findByIdUserLogin(
-                        @Param("id_ticket") Long id_ticket,
-                        @Param("id_login") Long id_login);
-
+        @Query("SELECT COALESCE(MAX(p.id_ticket), 0) FROM Tickets p WHERE p.id_login = :id_login")
+        Long generatedInsertSequential(@Param("id_login") Long id_login);
 }

@@ -1,5 +1,7 @@
 package airportmanage.airport.Services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +12,7 @@ import airportmanage.airport.Config.HandleException.HandleException;
 import airportmanage.airport.Domain.DTOs.BookingDTO;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Repository.BookingRepository;
-import airportmanage.airport.Repository.PassengerRepositroy;
+import airportmanage.airport.Repository.PassengerRepository;
 import airportmanage.airport.Repository.UserRepository;
 
 import jakarta.validation.Valid;
@@ -25,7 +27,7 @@ public class BookingService {
     private FilterLoginService filterLoginService;
 
     @Autowired
-    private PassengerRepositroy passengerRepositroy;
+    private PassengerRepository passengerRepositroy;
 
     @Autowired
     private UserRepository userRepository;
@@ -53,7 +55,7 @@ public class BookingService {
         booking.setUser(user);
         booking.setActive(bookingDTO.active());
 
-        return bookingRepository.saveBookingWithRoles(booking);
+        return bookingRepository.saveBooking(booking);
 
     }
 
@@ -72,9 +74,9 @@ public class BookingService {
     }
 
     @Transactional
-    public Booking getOneByID(Long id) {
+    public Optional<Booking> getOneByID(Long id) {
 
-        return bookingRepository.findByIdUserLogin(id, filterLoginService.getUserLogin());
+        return bookingRepository.findActivePassengerById(id, filterLoginService.getUserLogin());
     }
 
 }
