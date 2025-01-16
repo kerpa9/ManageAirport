@@ -3,13 +3,15 @@ package airportmanage.airport.Services;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import airportmanage.airport.Domain.DTOs.PlaneDTO;
 import airportmanage.airport.Domain.Models.Flight;
 import airportmanage.airport.Domain.Models.Plane;
 import airportmanage.airport.Repository.PlaneRepository;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @Service
@@ -46,6 +48,21 @@ public class PlaneService {
         }
 
         return planeRepository.savePlaneWithRole(plane);
+
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Plane> getAllPlane(Pageable pageable) {
+        if (pageable == null) {
+            throw new IllegalArgumentException("Pageable parameter cannot be null");
+        }
+
+        Long userLogin = filterLoginService.getUserLogin();
+        if (userLogin == null) {
+            throw new SecurityException("No authenticated user found");
+        }
+
+        return planeRepository.findAllActive(userLogin, pageable);
 
     }
 

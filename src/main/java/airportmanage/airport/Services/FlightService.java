@@ -1,14 +1,17 @@
 package airportmanage.airport.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import airportmanage.airport.Domain.DTOs.FlightDTO;
 import airportmanage.airport.Domain.Models.Flight;
 import airportmanage.airport.Repository.CitiesRepository;
 import airportmanage.airport.Repository.FlightRepository;
 import airportmanage.airport.Repository.PlaneRepository;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @Service
@@ -55,4 +58,18 @@ public class FlightService {
 
     }
 
+    @Transactional(readOnly = true)
+    public Page<Flight> getAllFlights(Pageable pageable) {
+
+        if (pageable == null) {
+            throw new IllegalArgumentException("Pageable parameter cannot be null");
+        }
+
+        Long userLogin = filterLoginService.getUserLogin();
+        if (userLogin == null) {
+            throw new SecurityException("No authenticated user found");
+        }
+
+        return flightRepository.findAllActive(userLogin, pageable);
+    }
 }
