@@ -82,4 +82,10 @@ public class CitiesService {
         return citiesRepository.findAllActive(userLogin, pageable);
     }
 
+
+    @Transactional
+    public City getOneByID(Long id){
+        return citiesRepository.findByIdUserLogin(id, filterLoginService.getUserLogin());
+
+    }
 }

@@ -71,4 +71,10 @@ public class BookingService {
         return bookingRepository.findAllActive(userLog, pageable);
     }
 
+    @Transactional
+    public Booking getOneByID(Long id) {
+
+        return bookingRepository.findByIdUserLogin(id, filterLoginService.getUserLogin());
+    }
+
 }
