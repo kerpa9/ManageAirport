@@ -70,4 +70,9 @@ public class TicketsService {
 
     }
 
+    @Transactional
+    public Tickets getOneTicket(Long id) {
+        return ticketsRepository.findByIdUserLogin(id, filterLoginService.getUserLogin());
+    }
+
 }
