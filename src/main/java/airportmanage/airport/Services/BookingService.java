@@ -70,13 +70,13 @@ public class BookingService {
             throw new SecurityException("No authenticated user found");
         }
 
-        return bookingRepository.findAllActive(userLog, pageable);
+        return bookingRepository.findAllActiveBookings(userLog, pageable);
     }
 
     @Transactional
     public Optional<Booking> getOneByID(Long id) {
 
-        return bookingRepository.findActivePassengerById(id, filterLoginService.getUserLogin());
+        return bookingRepository.findActiveBookingById(id, filterLoginService.getUserLogin());
     }
 
 }

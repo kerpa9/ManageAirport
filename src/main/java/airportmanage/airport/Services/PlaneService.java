@@ -16,6 +16,7 @@ import airportmanage.airport.Repository.PlaneRepository;
 import jakarta.validation.Valid;
 
 @Service
+
 public class PlaneService {
 
     @Autowired
@@ -63,7 +64,7 @@ public class PlaneService {
             throw new SecurityException("No authenticated user found");
         }
 
-        return planeRepository.findAllActive(userLogin, pageable);
+        return planeRepository.findAllActivePlane(userLogin, pageable);
 
     }
 

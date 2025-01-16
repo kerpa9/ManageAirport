@@ -82,7 +82,7 @@ public class PassengerService {
             throw new SecurityException("No authenticated user found");
         }
 
-        return passengerRepositroy.findAllActive(userLogin, pageable);
+        return passengerRepositroy.findAllActivePassengers(userLogin, pageable);
     }
 
     @Transactional

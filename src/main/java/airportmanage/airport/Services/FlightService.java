@@ -72,7 +72,7 @@ public class FlightService {
             throw new SecurityException("No authenticated user found");
         }
 
-        return flightRepository.findAllActive(userLogin, pageable);
+        return flightRepository.findAllActiveFlight(userLogin, pageable);
     }
 
     @Transactional

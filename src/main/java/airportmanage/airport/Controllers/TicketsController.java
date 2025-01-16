@@ -56,7 +56,7 @@ public class TicketsController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Tickets> getOneTicket(@PathVariable @Valid Long id) {
+    public Optional<Tickets> getOneTicketById(@PathVariable @Valid Long id) {
         return ticketsService.getOneTicket(id);
     }
 

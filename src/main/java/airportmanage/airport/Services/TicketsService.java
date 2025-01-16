@@ -69,7 +69,7 @@ public class TicketsService {
         if (userLogin == null) {
             throw new SecurityException("No authenticated user found");
         }
-        return ticketsRepository.findAllActive(userLogin, pageable);
+        return ticketsRepository.findAllActiveTicket(userLogin, pageable);
 
     }
 

@@ -80,7 +80,7 @@ public class CitiesService {
             throw new SecurityException("No authenticated user found");
         }
 
-        return citiesRepository.findAllActive(userLogin, pageable);
+        return citiesRepository.findAllActiveCity(userLogin, pageable);
     }
 
 

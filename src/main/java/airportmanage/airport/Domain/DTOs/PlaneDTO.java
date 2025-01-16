@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record PlaneDTO(
 
-        Long id_plane,
+        // Long id_plane,
         @NotNull Integer plane_number,
         @NotNull String model,
         @NotNull Integer max_capacity,
