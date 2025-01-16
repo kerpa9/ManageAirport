@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import airportmanage.airport.Domain.DTOs.PassengerDTO;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Domain.Models.Passenger;
@@ -83,5 +82,10 @@ public class PassengerService {
         }
 
         return passengerRepositroy.findAllActive(userLogin, pageable);
+    }
+
+    @Transactional
+    public Passenger getOneById(Long id) {
+        return passengerRepositroy.findByIdUserLogin(id, filterLoginService.getUserLogin());
     }
 }

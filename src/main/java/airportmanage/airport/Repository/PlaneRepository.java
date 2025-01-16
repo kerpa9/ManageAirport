@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import airportmanage.airport.Domain.Enums.RoleUser;
-import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Domain.Models.Plane;
 import airportmanage.airport.Repository.BaseRepository.BaseRepository;
 
@@ -46,7 +45,7 @@ public interface PlaneRepository extends BaseRepository<Plane> {
         @Query("""
                         select t from Plane t where t.active=TRUE
                         and t.id_login = :id_login and t.id_plane = :id_plane""")
-        Passenger findByIdUserLogin(
+        Plane findByIdUserLogin(
                         @Param("id_plane") Long id_plane,
                         @Param("id_login") Long id_login);
 

@@ -72,4 +72,10 @@ public class FlightService {
 
         return flightRepository.findAllActive(userLogin, pageable);
     }
+
+    @Transactional
+    public Flight getOneById(Long id) {
+        return flightRepository.findByIdUserLogin(id, filterLoginService.getUserLogin());
+    }
+
 }

@@ -66,4 +66,9 @@ public class PlaneService {
 
     }
 
+    @Transactional
+    public Plane getOnePlane(Long id) {
+        return planeRepository.findByIdUserLogin(id, filterLoginService.getUserLogin());
+    }
+
 }

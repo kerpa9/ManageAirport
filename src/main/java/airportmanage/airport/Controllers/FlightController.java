@@ -7,6 +7,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +52,11 @@ public class FlightController {
                         f.getDeparture_time(), f.getCheck_in(), f.getCreated_at(), f.getActive()));
 
         return ResponseEntity.ok(PageableDTO.fromPage(flightDTO));
+    }
+
+    @GetMapping("/{id}")
+    public Flight getById(@PathVariable @Valid Long id) {
+        return flightService.getOneById(id);
     }
 
 }
