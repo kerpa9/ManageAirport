@@ -15,7 +15,13 @@ import airportmanage.airport.Repository.BaseRepository.BaseRepository;
 
 public interface BookingRepository extends BaseRepository<Booking> {
 
-    static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLES = EnumSet.of(RoleUser.admin, RoleUser.receptionist);
+    static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESC = EnumSet.of(RoleUser.admin, RoleUser.receptionist,
+            RoleUser.user, RoleUser.manager);
+    static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESR = EnumSet.of(RoleUser.admin, RoleUser.receptionist,
+            RoleUser.manager, RoleUser.user);
+    static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESU = EnumSet.of(RoleUser.admin, RoleUser.receptionist,
+            RoleUser.user, RoleUser.manager);
+    static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESD = EnumSet.of(RoleUser.admin, RoleUser.manager);
 
     @Override
     default Booking createDummyEntity(Long loginId) {
@@ -25,13 +31,13 @@ public interface BookingRepository extends BaseRepository<Booking> {
     }
 
     default Booking saveBooking(Booking booking) {
-        return saveWithRoleValidation(booking, DEFAULT_AUTHORIZED_ROLES);
+        return saveWithRoleValidation(booking, DEFAULT_AUTHORIZED_ROLESC);
     }
 
     default Page<Booking> findAllActiveBookings(Long loginId, Pageable pageable) {
         return genericValidateFunction(
                 createDummyEntity(loginId),
-                DEFAULT_AUTHORIZED_ROLES,
+                DEFAULT_AUTHORIZED_ROLESR,
                 p -> findAllActive(loginId, pageable),
                 "READ_ACTIVE");
     }
@@ -39,7 +45,7 @@ public interface BookingRepository extends BaseRepository<Booking> {
     default Optional<Booking> findActiveBookingById(Long id, Long loginId) {
         return genericValidateFunction(
                 createDummyEntity(loginId),
-                DEFAULT_AUTHORIZED_ROLES,
+                DEFAULT_AUTHORIZED_ROLESR,
                 p -> Optional.ofNullable(findByIdActive(id)),
                 "READ_BY_ID");
     }

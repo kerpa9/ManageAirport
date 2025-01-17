@@ -15,7 +15,11 @@ import airportmanage.airport.Repository.BaseRepository.BaseRepository;
 
 public interface PlaneRepository extends BaseRepository<Plane> {
 
-        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLES = EnumSet.of(RoleUser.admin, RoleUser.receptionist);
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESC = EnumSet.of(RoleUser.admin, RoleUser.manager) ;
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESR = EnumSet.of(RoleUser.admin, RoleUser.receptionist,
+                        RoleUser.manager, RoleUser.user, RoleUser.developers);
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESU = EnumSet.of(RoleUser.admin, RoleUser.manager);
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESD = EnumSet.of(RoleUser.admin, RoleUser.manager);
 
         @Override
         default Plane createDummyEntity(Long loginId) {
@@ -25,13 +29,13 @@ public interface PlaneRepository extends BaseRepository<Plane> {
         }
 
         default Plane savePlane(Plane plane) {
-                return saveWithRoleValidation(plane, DEFAULT_AUTHORIZED_ROLES);
+                return saveWithRoleValidation(plane, DEFAULT_AUTHORIZED_ROLESC);
         }
 
         default Page<Plane> findAllActivePlane(Long loginId, Pageable pageable) {
                 return genericValidateFunction(
                                 createDummyEntity(loginId),
-                                DEFAULT_AUTHORIZED_ROLES,
+                                DEFAULT_AUTHORIZED_ROLESR,
                                 p -> findAllActive(loginId, pageable),
                                 "READ_ACTIVE");
         }
@@ -39,7 +43,7 @@ public interface PlaneRepository extends BaseRepository<Plane> {
         default Optional<Plane> findActivePlaneById(Long id, Long loginId) {
                 return genericValidateFunction(
                                 createDummyEntity(loginId),
-                                DEFAULT_AUTHORIZED_ROLES,
+                                DEFAULT_AUTHORIZED_ROLESR,
                                 p -> Optional.ofNullable(findByIdActive(id)),
                                 "READ_BY_ID");
         }

@@ -15,7 +15,13 @@ import airportmanage.airport.Repository.BaseRepository.BaseRepository;
 
 public interface TicketsRepository extends BaseRepository<Tickets> {
 
-        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLES = EnumSet.of(RoleUser.admin, RoleUser.receptionist);
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESC = EnumSet.of(RoleUser.admin, RoleUser.receptionist,
+                        RoleUser.manager);
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESR = EnumSet.of(RoleUser.admin, RoleUser.receptionist,
+                        RoleUser.manager, RoleUser.user, RoleUser.developers);
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESU = EnumSet.of(RoleUser.admin, RoleUser.receptionist,
+                        RoleUser.user, RoleUser.manager);
+        static final Set<RoleUser> DEFAULT_AUTHORIZED_ROLESD = EnumSet.of(RoleUser.admin, RoleUser.receptionist);
 
         @Override
         default Tickets createDummyEntity(Long loginId) {
@@ -25,13 +31,13 @@ public interface TicketsRepository extends BaseRepository<Tickets> {
         }
 
         default Tickets saveTicket(Tickets tickets) {
-                return saveWithRoleValidation(tickets, DEFAULT_AUTHORIZED_ROLES);
+                return saveWithRoleValidation(tickets, DEFAULT_AUTHORIZED_ROLESC);
         }
 
         default Page<Tickets> findAllActiveTicket(Long loginId, Pageable pageable) {
                 return genericValidateFunction(
                                 createDummyEntity(loginId),
-                                DEFAULT_AUTHORIZED_ROLES,
+                                DEFAULT_AUTHORIZED_ROLESR,
                                 p -> findAllActive(loginId, pageable),
                                 "READ_ACTIVE");
         }
@@ -39,7 +45,7 @@ public interface TicketsRepository extends BaseRepository<Tickets> {
         default Optional<Tickets> findActiveTicketById(Long id, Long loginId) {
                 return genericValidateFunction(
                                 createDummyEntity(loginId),
-                                DEFAULT_AUTHORIZED_ROLES,
+                                DEFAULT_AUTHORIZED_ROLESR,
                                 p -> Optional.ofNullable(findByIdActive(id)),
                                 "READ_BY_ID");
         }
