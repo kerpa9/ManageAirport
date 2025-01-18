@@ -60,7 +60,7 @@ public class CitiesService {
 
         if (cityDTO.origin() != null) {
             city.setOrigin(cityDTO.origin().stream()
-                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, null, city, null))
+                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, null, city, f.getPlane()))
                     .collect(Collectors.toList()));
         }
 
