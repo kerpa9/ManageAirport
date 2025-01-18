@@ -3,6 +3,7 @@ package airportmanage.airport.Domain.Models;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -34,7 +35,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class User {
 
     @Id
@@ -59,22 +60,21 @@ public class User {
     private LocalDateTime token_expiry;
     private Boolean email_verified;
 
-    
     @JsonManagedReference("user-passengers")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Passenger> passengers = new ArrayList<>();
-    
-    
+
     @JsonManagedReference("user-tickets")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tickets> tickets = new ArrayList<>();
-    
+
     @JsonManagedReference("user-bookings")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<>();
 
-    public void setStatusInactiveUser() {
-        this.active = false;
+    public Optional<User> setStatusInactiveUser() {
+        active = false;
+        return Optional.empty();
     }
 
     public void verifyEmail() {

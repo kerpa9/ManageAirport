@@ -56,7 +56,6 @@ public class TicketsService {
 
         return ticketsRepository.saveTicket(tickets);
 
-
     }
 
     @Transactional(readOnly = true)
@@ -78,4 +77,12 @@ public class TicketsService {
         return ticketsRepository.findActiveTicketById(id, filterLoginService.getUserLogin());
     }
 
+    @Transactional
+    public Optional<Optional<Tickets>> softDelete(Long id) {
+        Optional<Tickets> setSoftDelete = ticketsRepository.findActiveTicketById(id, filterLoginService.getUserLogin());
+
+        return setSoftDelete.map(ticket -> {
+            return ticket.setStatusInactiveTicket();
+        }).or(() -> Optional.empty());
+    }
 }

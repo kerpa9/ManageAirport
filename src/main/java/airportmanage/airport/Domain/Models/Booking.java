@@ -1,6 +1,7 @@
 package airportmanage.airport.Domain.Models;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -40,19 +41,20 @@ public class Booking implements IUserOwnedEntity {
     private LocalDateTime created_at;
     private Boolean active;
 
-    
-    @JsonBackReference("user-bookings")  
+    @JsonBackReference("user-bookings")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    
-    @JsonBackReference("passenger-bookings")  
+
+    @JsonBackReference("passenger-bookings")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "passenger_id")
     private Passenger passenger;
 
-    public void setStatusInactiveBooking() {
-        this.active = false;
+    public Optional<Booking> setStatusInactiveBooking() {
+        active = false;
+        return Optional.empty();
+
     }
 
     @Override

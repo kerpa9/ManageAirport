@@ -83,10 +83,19 @@ public class CitiesService {
         return citiesRepository.findAllActiveCity(userLogin, pageable);
     }
 
+    @Transactional
+    public Optional<City> getOneByID(Long id) {
+        return citiesRepository.findActiveCityById(id, filterLoginService.getUserLogin());
+
+    }
 
     @Transactional
-    public Optional<City> getOneByID(Long id){
-        return citiesRepository.findActiveCityById(id, filterLoginService.getUserLogin());
+    public Optional<Optional<City>> softDelete(Long id) {
+        Optional<City> setSoftDelete = citiesRepository.findActiveCityById(id, filterLoginService.getUserLogin());
+
+        return setSoftDelete.map(city -> {
+            return city.setStatusInactiveCity();
+        }).or(() -> Optional.empty());
 
     }
 }

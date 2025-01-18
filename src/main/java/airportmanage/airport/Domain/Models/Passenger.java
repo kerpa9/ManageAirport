@@ -3,6 +3,7 @@ package airportmanage.airport.Domain.Models;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,7 +56,7 @@ public class Passenger implements IUserOwnedEntity {
     private Boolean active;
 
     // Join users
-    @JsonBackReference("user-passengers")  
+    @JsonBackReference("user-passengers")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -64,12 +65,13 @@ public class Passenger implements IUserOwnedEntity {
     @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tickets> tickets = new ArrayList<>();
 
-    @JsonManagedReference("passenger-bookings")  
+    @JsonManagedReference("passenger-bookings")
     @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<>();
 
-    public void setStatusInactivePassenger() {
-        this.active = false;
+    public Optional<Passenger> setStatusInactivePassenger() {
+        active = false;
+        return Optional.empty();
 
     }
 

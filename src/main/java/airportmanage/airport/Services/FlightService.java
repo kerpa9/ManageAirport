@@ -80,4 +80,14 @@ public class FlightService {
         return flightRepository.findActiveFlightById(id, filterLoginService.getUserLogin());
     }
 
+    @Transactional
+    public Optional<Optional<Flight>> softDelete(Long id) {
+
+        Optional<Flight> setSoftDelete = flightRepository.findActiveFlightById(id, filterLoginService.getUserLogin());
+
+        return setSoftDelete.map(flight -> {
+            return flight.setStatusInactiveFlight();
+        }).or(() -> Optional.empty());
+    }
+
 }

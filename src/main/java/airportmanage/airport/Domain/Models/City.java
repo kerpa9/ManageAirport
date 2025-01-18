@@ -3,6 +3,7 @@ package airportmanage.airport.Domain.Models;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -47,14 +48,14 @@ public class City implements IUserOwnedEntity {
     @JsonManagedReference("city-origin-flights")
     @OneToMany(mappedBy = "origin", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flight> origin = new ArrayList<>();
-    
+
     @JsonManagedReference("city-destination-flights")
     @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flight> destination = new ArrayList<>();
 
-
-    public void setStatusInactiveCity() {
-        this.active = false;
+    public Optional<City> setStatusInactiveCity() {
+        active = false;
+        return Optional.empty();
     }
 
     @Override

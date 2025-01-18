@@ -74,4 +74,15 @@ public class PlaneService {
         return planeRepository.findActivePlaneById(id, filterLoginService.getUserLogin());
     }
 
+    @Transactional
+    public Optional<Optional<Plane>> softDelete(Long id) {
+
+        Optional<Plane> setSoftDelete = planeRepository.findActivePlaneById(id, filterLoginService.getUserLogin());
+
+        return setSoftDelete.map(plane -> {
+            return plane.setStatusInactivePlane();
+        }).or(() -> Optional.empty());
+
+    }
+
 }

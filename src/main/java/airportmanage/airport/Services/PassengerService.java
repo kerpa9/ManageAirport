@@ -90,4 +90,15 @@ public class PassengerService {
     public Optional<Passenger> getOneById(Long id) {
         return passengerRepositroy.findActivePassengerById(id, filterLoginService.getUserLogin());
     }
+
+    @Transactional
+    public Optional<Optional<Passenger>> softdelete(Long id) {
+
+        Optional<Passenger> setDoftDelete = passengerRepositroy.findActivePassengerById(id,
+                filterLoginService.getUserLogin());
+
+        return setDoftDelete.map(passenger -> {
+            return passenger.setStatusInactivePassenger();
+        }).or(() -> Optional.empty());
+    }
 }

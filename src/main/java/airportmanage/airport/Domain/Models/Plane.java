@@ -3,6 +3,7 @@ package airportmanage.airport.Domain.Models;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -44,7 +45,7 @@ public class Plane implements IUserOwnedEntity {
     private String model;
     private Integer max_capacity;
     @Enumerated(EnumType.STRING)
-    private Airline airline; 
+    private Airline airline;
     private LocalDateTime created_at;
     private Boolean active;
 
@@ -52,8 +53,9 @@ public class Plane implements IUserOwnedEntity {
     @OneToMany(mappedBy = "plane", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flight> flight = new ArrayList<>();
 
-    public void setStatusInactivePlane() {
-        this.active = false;
+    public Optional<Plane> setStatusInactivePlane() {
+        active = false;
+        return Optional.empty();
 
     }
 

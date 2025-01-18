@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,7 +51,8 @@ public class FlightController {
         Page<Flight> flight = flightService.getAllFlights(pageable);
 
         Page<FlightDTO> flightDTO = flight.map(
-                f -> new FlightDTO(f.getId_flight(), f.getOrigin().getId(), f.getDestination().getId(), f.getPlane().getId(),
+                f -> new FlightDTO(f.getId_flight(), f.getOrigin().getId(), f.getDestination().getId(),
+                        f.getPlane().getId(),
                         f.getDeparture_time(), f.getCheck_in(), f.getCreated_at(), f.getActive()));
 
         return ResponseEntity.ok(PageableDTO.fromPage(flightDTO));
@@ -59,6 +61,11 @@ public class FlightController {
     @GetMapping("/{id}")
     public Optional<Flight> getById(@PathVariable @Valid Long id) {
         return flightService.getOneById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public Optional<Optional<Flight>> softDelete(@PathVariable @Valid Long id) {
+        return flightService.softDelete(id);
     }
 
 }

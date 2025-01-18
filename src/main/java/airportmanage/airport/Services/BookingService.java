@@ -79,4 +79,15 @@ public class BookingService {
         return bookingRepository.findActiveBookingById(id, filterLoginService.getUserLogin());
     }
 
+    @Transactional
+    public Optional<Optional<Booking>> softDelete(Long id) {
+
+        Optional<Booking> setSoftDelete = bookingRepository.findActiveBookingById(id,
+                filterLoginService.getUserLogin());
+
+        return setSoftDelete.map(booking -> {
+            return booking.setStatusInactiveBooking();
+        }).or(() -> Optional.empty());
+    }
+
 }
