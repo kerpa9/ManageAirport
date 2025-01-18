@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import airportmanage.airport.Config.EmailSender;
-import airportmanage.airport.Domain.DTOs.UserDTO;
+import airportmanage.airport.Domain.DTOs.Create.UserDTO;
 import airportmanage.airport.Domain.Models.User;
 import airportmanage.airport.Services.UserService;
 import jakarta.validation.Valid;

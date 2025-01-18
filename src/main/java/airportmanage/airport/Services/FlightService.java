@@ -1,15 +1,13 @@
 package airportmanage.airport.Services;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import airportmanage.airport.Domain.DTOs.FlightDTO;
+import airportmanage.airport.Domain.DTOs.Create.FlightDTO;
 import airportmanage.airport.Domain.Models.Flight;
 import airportmanage.airport.Repository.CitiesRepository;
 import airportmanage.airport.Repository.FlightRepository;

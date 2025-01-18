@@ -1,4 +1,4 @@
-package airportmanage.airport.Domain.DTOs;
+package airportmanage.airport.Domain.DTOs.Configure;
 
 import java.util.List;
 

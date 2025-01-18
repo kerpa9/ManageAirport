@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import airportmanage.airport.Domain.DTOs.BookingDTO;
-import airportmanage.airport.Domain.DTOs.PageableDTO;
+import airportmanage.airport.Domain.DTOs.Configure.PageableDTO;
+import airportmanage.airport.Domain.DTOs.Create.BookingDTO;
+import airportmanage.airport.Domain.DTOs.Update.BookingDTOU;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Services.BookingService;
 import jakarta.validation.Valid;
@@ -68,4 +69,10 @@ public class BookingController {
         return bookingService.softDelete(id);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Optional<Booking>> update(@RequestBody @Valid BookingDTOU BookingDTOU,
+            @PathVariable @Valid Long id) {
+        Optional<Booking> update = bookingService.updateBooking(BookingDTOU, id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(update);
+    }
 }

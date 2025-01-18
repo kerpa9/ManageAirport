@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import airportmanage.airport.Config.HandleException.HandleException;
-import airportmanage.airport.Domain.DTOs.BookingDTO;
+import airportmanage.airport.Domain.DTOs.Create.BookingDTO;
+import airportmanage.airport.Domain.DTOs.Update.BookingDTOU;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Repository.BookingRepository;
 import airportmanage.airport.Repository.PassengerRepository;
@@ -88,6 +89,16 @@ public class BookingService {
         return setSoftDelete.map(booking -> {
             return booking.setStatusInactiveBooking();
         }).or(() -> Optional.empty());
+    }
+
+    @Transactional
+    public Optional<Booking> updateBooking(@Valid BookingDTOU bookingDTOU, Long id) {
+        Optional<Booking> updateBook = bookingRepository.findActiveBookingById(id, filterLoginService.getUserLogin());
+
+        return updateBook.map(booking -> {
+            booking.setCreated_at(bookingDTOU.created_at());
+            return bookingRepository.saveBooking(booking);
+        });
     }
 
 }

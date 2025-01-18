@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import airportmanage.airport.Config.HandleException.HandleException;
-import airportmanage.airport.Domain.DTOs.CityDTO;
+import airportmanage.airport.Domain.DTOs.Create.CityDTO;
 import airportmanage.airport.Domain.Models.City;
 import airportmanage.airport.Domain.Models.Flight;
 import airportmanage.airport.Repository.CitiesRepository;

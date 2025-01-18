@@ -9,7 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import airportmanage.airport.Domain.DTOs.PassengerDTO;
+
+import airportmanage.airport.Domain.DTOs.Create.PassengerDTO;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Domain.Models.Tickets;

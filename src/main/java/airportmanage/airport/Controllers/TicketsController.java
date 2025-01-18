@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import airportmanage.airport.Domain.DTOs.PageableDTO;
-import airportmanage.airport.Domain.DTOs.TicketsDTO;
+import airportmanage.airport.Domain.DTOs.Configure.PageableDTO;
+import airportmanage.airport.Domain.DTOs.Create.TicketsDTO;
 import airportmanage.airport.Domain.Models.Tickets;
 import airportmanage.airport.Services.TicketsService;
 import jakarta.validation.Valid;

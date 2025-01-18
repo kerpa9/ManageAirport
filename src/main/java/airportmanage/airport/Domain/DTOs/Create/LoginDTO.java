@@ -1,4 +1,4 @@
-package airportmanage.airport.Domain.DTOs;
+package airportmanage.airport.Domain.DTOs.Create;
 
 import airportmanage.airport.Domain.Enums.RoleUser;
 import jakarta.persistence.EnumType;

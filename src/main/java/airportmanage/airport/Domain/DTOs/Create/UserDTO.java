@@ -1,4 +1,4 @@
-package airportmanage.airport.Domain.DTOs;
+package airportmanage.airport.Domain.DTOs.Create;
 
 import java.time.LocalDateTime;
 import java.util.List;

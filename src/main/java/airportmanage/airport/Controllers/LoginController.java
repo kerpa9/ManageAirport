@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import airportmanage.airport.Domain.DTOs.DataJWTToken;
-import airportmanage.airport.Domain.DTOs.LoginDTO;
+import airportmanage.airport.Domain.DTOs.Configure.DataJWTToken;
+import airportmanage.airport.Domain.DTOs.Create.LoginDTO;
 import airportmanage.airport.Domain.Models.Login;
 import airportmanage.airport.Services.TokenService;
 import jakarta.validation.Valid;

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import airportmanage.airport.Config.EmailSender;
-import airportmanage.airport.Domain.DTOs.UserDTO;
+import airportmanage.airport.Domain.DTOs.Create.UserDTO;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Domain.Models.Login;
 import airportmanage.airport.Domain.Models.Passenger;
