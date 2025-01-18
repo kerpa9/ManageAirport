@@ -59,7 +59,6 @@ public class User {
     private LocalDateTime token_expiry;
     private Boolean email_verified;
 
-    // @JsonIgnore
     
     @JsonManagedReference("user-passengers")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

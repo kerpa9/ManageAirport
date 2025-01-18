@@ -44,17 +44,12 @@ public class Passenger implements IUserOwnedEntity {
     @JsonIgnore
     private Long id_login;
     private Long id_passenger;
-    // @NotBlank
     private String first_name;
-    // @NotBlank
     private String last_name;
     private LocalDateTime born_date;
     @Enumerated(EnumType.STRING)
     private Genre genre;
-    // @NotBlank
-    // @Email
     private String email;
-    // @NotBlank
     private String password;
     private String phone;
     private Boolean active;

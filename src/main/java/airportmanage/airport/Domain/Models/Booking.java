@@ -35,12 +35,9 @@ public class Booking implements IUserOwnedEntity {
     private Long id_login;
     private Long id_booking;
     private LocalDateTime booking_date;
-    // private Long id_passenger;
-    // private Long id_flight;
     private Integer nro_tickets;
     private Double total_price;
     private LocalDateTime created_at;
-    // private Integer created_by;
     private Boolean active;
 
     
