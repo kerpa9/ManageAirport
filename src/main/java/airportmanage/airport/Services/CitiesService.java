@@ -54,7 +54,7 @@ public class CitiesService {
 
         if (cityDTO.destination() != null) {
             city.setDestination(cityDTO.destination().stream()
-                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, city, null, null))
+                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, city, null, f.getPlane()))
                     .collect(Collectors.toList()));
         }
 

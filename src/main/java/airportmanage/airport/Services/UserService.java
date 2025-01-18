@@ -2,7 +2,6 @@ package airportmanage.airport.Services;
 
 import java.util.stream.Collectors;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,18 +46,22 @@ public class UserService {
         if (userDTO.passenger() != null) {
             user.setPassengers(
                     userDTO.passenger().stream()
-                            .map(u -> new Passenger(null, null, null, u.first_name(), u.last_name(), null, u.genre(),
-                                    u.email(), null, u.phone(), null, null, null, null)).collect(Collectors.toList()));
+                            .map(u -> new Passenger(u.id_passenger(), null, null, u.first_name(), u.last_name(), null,
+                                    u.genre(),
+                                    u.email(), null, u.phone(), null, null, u.ticket(), u.bookings()))
+                            .collect(Collectors.toList()));
 
         }
 
-        if(userDTO.tickets()!=null){
-            user.setTickets(userDTO.tickets().stream().map(t->new Tickets(t.id_ticket(), null, null, null, null, null, null, null, null, null)).collect(Collectors.toList()));
+        if (userDTO.tickets() != null) {
+            user.setTickets(userDTO.tickets().stream().map(t -> new Tickets(t.id_ticket(), null, null, null, t.price(),
+                    t.seat_number(), null, null, null, null)).collect(Collectors.toList()));
 
         }
 
-        if(userDTO.booking()!=null){
-            user.setBookings(userDTO.booking().stream().map(b->new Booking(b.id_booking(), null, null, null, b.nro_tickets(), b.total_price(), null, null, null, null)).collect(Collectors.toList()));
+        if (userDTO.booking() != null) {
+            user.setBookings(userDTO.booking().stream().map(b -> new Booking(b.id_booking(), null, null, null,
+                    b.nro_tickets(), b.total_price(), null, null, null, null)).collect(Collectors.toList()));
         }
 
         emailSender.sendValidateEmail(user);
