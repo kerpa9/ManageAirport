@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import airportmanage.airport.Domain.DTOs.Create.PassengerDTO;
+import airportmanage.airport.Domain.DTOs.Update.PassengerDTOU;
 import airportmanage.airport.Domain.Models.Booking;
 import airportmanage.airport.Domain.Models.Passenger;
 import airportmanage.airport.Domain.Models.Tickets;
@@ -101,5 +102,23 @@ public class PassengerService {
         return setDoftDelete.map(passenger -> {
             return passenger.setStatusInactivePassenger();
         }).or(() -> Optional.empty());
+    }
+
+    @Transactional
+    public Optional<Passenger> updatePassenger(@Valid PassengerDTOU passengerDTOU, Long id) {
+        Optional<Passenger> updatePassenger = passengerRepositroy.findActivePassengerById(id,
+                filterLoginService.getUserLogin());
+
+        return updatePassenger.map(passenger -> {
+            passenger.setFirst_name(passengerDTOU.first_name());
+            passenger.setLast_name(passengerDTOU.last_name());
+            passenger.setBorn_date(passengerDTOU.born_date());
+            passenger.setGenre(passengerDTOU.genre());
+            passenger.setPassword(passengerDTOU.password());
+            passenger.setPhone(passengerDTOU.phone());
+
+            return passengerRepositroy.savePassenger(passenger);
+
+        });
     }
 }

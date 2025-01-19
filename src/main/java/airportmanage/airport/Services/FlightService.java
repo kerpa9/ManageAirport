@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import airportmanage.airport.Domain.DTOs.Create.FlightDTO;
+import airportmanage.airport.Domain.DTOs.Update.FlightDTOU;
 import airportmanage.airport.Domain.Models.Flight;
 import airportmanage.airport.Repository.CitiesRepository;
 import airportmanage.airport.Repository.FlightRepository;
@@ -86,6 +87,21 @@ public class FlightService {
         return setSoftDelete.map(flight -> {
             return flight.setStatusInactiveFlight();
         }).or(() -> Optional.empty());
+    }
+
+    @Transactional
+    public Optional<Flight> updateFlight(@Valid FlightDTOU flightDTOU, Long id) {
+
+        Optional<Flight> updateFlight = flightRepository.findActiveFlightById(id, filterLoginService.getUserLogin());
+
+        return updateFlight.map(flight -> {
+            flight.setDeparture_time(flightDTOU.departure_time());
+            flight.setCheck_in(flightDTOU.check_in());
+            flight.setCreated_at(flightDTOU.created_at());
+            return flightRepository.saveFlight(flight);
+
+        });
+
     }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import airportmanage.airport.Config.HandleException.HandleException;
 import airportmanage.airport.Domain.DTOs.Create.CityDTO;
+import airportmanage.airport.Domain.DTOs.Update.CityDTOU;
 import airportmanage.airport.Domain.Models.City;
 import airportmanage.airport.Domain.Models.Flight;
 import airportmanage.airport.Repository.CitiesRepository;
@@ -96,6 +97,21 @@ public class CitiesService {
         return setSoftDelete.map(city -> {
             return city.setStatusInactiveCity();
         }).or(() -> Optional.empty());
+
+    }
+
+    @Transactional
+    public Optional<City> update(@Valid CityDTOU cityDTOU, Long id) {
+
+        Optional<City> updateCity = citiesRepository.findActiveCityById(id, filterLoginService.getUserLogin());
+
+        return updateCity.map(city -> {
+            city.setName(cityDTOU.name());
+            city.setCountry(cityDTOU.country());
+            city.setLat(cityDTOU.lat());
+            city.setLon(cityDTOU.lon());
+            return citiesRepository.saveCity(city);
+        });
 
     }
 }

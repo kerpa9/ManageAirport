@@ -96,6 +96,8 @@ public class BookingService {
         Optional<Booking> updateBook = bookingRepository.findActiveBookingById(id, filterLoginService.getUserLogin());
 
         return updateBook.map(booking -> {
+            booking.setNro_tickets(bookingDTOU.nro_tickets());
+            booking.setTotal_price(bookingDTOU.total_price());
             booking.setCreated_at(bookingDTOU.created_at());
             return bookingRepository.saveBooking(booking);
         });

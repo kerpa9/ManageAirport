@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import airportmanage.airport.Domain.DTOs.Configure.PageableDTO;
 import airportmanage.airport.Domain.DTOs.Create.CityDTO;
+import airportmanage.airport.Domain.DTOs.Update.CityDTOU;
 import airportmanage.airport.Domain.Models.City;
 import airportmanage.airport.Services.CitiesService;
 import jakarta.validation.Valid;
@@ -68,6 +70,14 @@ public class CitiesController {
     @DeleteMapping("/{id}")
     public Optional<Optional<City>> softDelete(@PathVariable @Valid Long id) {
         return citiesService.softDelete(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Optional<City>> update(@RequestBody @Valid CityDTOU cityDTOU, @PathVariable Long id) {
+        Optional<City> update = citiesService.update(cityDTOU, id);
+
+        return ResponseEntity.status(HttpStatus.PROCESSING).body(update);
+
     }
 
 }
