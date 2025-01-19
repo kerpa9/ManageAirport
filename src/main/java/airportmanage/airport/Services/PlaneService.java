@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import airportmanage.airport.Domain.DTOs.Create.PlaneDTO;
+import airportmanage.airport.Domain.DTOs.Update.PlaneDTOU;
 import airportmanage.airport.Domain.Models.Flight;
 import airportmanage.airport.Domain.Models.Plane;
 import airportmanage.airport.Repository.PlaneRepository;
@@ -72,6 +73,21 @@ public class PlaneService {
     @Transactional
     public Optional<Plane> getOnePlane(Long id) {
         return planeRepository.findActivePlaneById(id, filterLoginService.getUserLogin());
+    }
+
+    @Transactional
+    public Optional<Plane> updatePlane(@Valid PlaneDTOU planedDTOU, Long id) {
+
+        Optional<Plane> updatePlane = planeRepository.findActivePlaneById(id, filterLoginService.getUserLogin());
+
+        return updatePlane.map(plane -> {
+            plane.setPlane_number(planedDTOU.plane_number());
+            plane.setModel(planedDTOU.model());
+            plane.setMax_capacity(planedDTOU.max_capacity());
+            plane.setAirline(planedDTOU.airline());
+            plane.setCreated_at(planedDTOU.created_at());
+            return planeRepository.savePlane(plane);
+        });
     }
 
     @Transactional

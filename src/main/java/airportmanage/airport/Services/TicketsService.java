@@ -1,14 +1,13 @@
 package airportmanage.airport.Services;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import airportmanage.airport.Domain.DTOs.Create.TicketsDTO;
+import airportmanage.airport.Domain.DTOs.Update.TicketsDTOU;
 import airportmanage.airport.Domain.Models.Tickets;
 import airportmanage.airport.Repository.PassengerRepository;
 import airportmanage.airport.Repository.TicketsRepository;
@@ -75,6 +74,22 @@ public class TicketsService {
     @Transactional
     public Optional<Tickets> getOneTicket(Long id) {
         return ticketsRepository.findActiveTicketById(id, filterLoginService.getUserLogin());
+    }
+
+    @Transactional
+    public Optional<Tickets> updateTicket(@Valid TicketsDTOU ticketDtou, Long id) {
+
+        Optional<Tickets> updateTicket = ticketsRepository.findActiveTicketById(id, filterLoginService.getUserLogin());
+
+        return updateTicket.map(ticket -> {
+
+            ticket.setPrice(ticketDtou.price());
+            ticket.setCreated_at(ticketDtou.created_at());
+            ticket.setSeat_number(ticketDtou.seat_number());
+
+            return ticketsRepository.saveTicket(ticket);
+        });
+
     }
 
     @Transactional

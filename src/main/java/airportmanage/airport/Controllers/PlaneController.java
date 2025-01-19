@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import airportmanage.airport.Domain.DTOs.Configure.PageableDTO;
 import airportmanage.airport.Domain.DTOs.Create.PlaneDTO;
+import airportmanage.airport.Domain.DTOs.Update.PlaneDTOU;
 import airportmanage.airport.Domain.Models.Plane;
 import airportmanage.airport.Services.PlaneService;
 import jakarta.validation.Valid;
@@ -61,6 +63,15 @@ public class PlaneController {
     @GetMapping("/{id}")
     public Optional<Plane> getById(@PathVariable @Valid Long id) {
         return planeService.getOnePlane(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Optional<Plane>> update(@RequestBody @Valid PlaneDTOU planeDTOU,
+            @PathVariable @Valid Long id) {
+
+        Optional<Plane> update = planeService.updatePlane(planeDTOU, id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(update);
     }
 
     @DeleteMapping("/{id}")
