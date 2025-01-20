@@ -83,6 +83,7 @@ public class TicketsService {
 
         return updateTicket.map(ticket -> {
 
+            ticket.setType_class(ticketDtou.type_class());
             ticket.setPrice(ticketDtou.price());
             ticket.setCreated_at(ticketDtou.created_at());
             ticket.setSeat_number(ticketDtou.seat_number());

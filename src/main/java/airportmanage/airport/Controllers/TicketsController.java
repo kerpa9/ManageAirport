@@ -64,7 +64,7 @@ public class TicketsController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Optional<Tickets>> updateTicket(@RequestBody @Valid TicketsDTOU ticketsDTOU,
-            @PathVariable Long id) {
+            @PathVariable @Valid Long id) {
 
         Optional<Tickets> update = ticketsService.updateTicket(ticketsDTOU, id);
 
