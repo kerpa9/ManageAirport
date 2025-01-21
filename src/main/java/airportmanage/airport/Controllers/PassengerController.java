@@ -81,16 +81,33 @@ public class PassengerController {
 
     @DeleteMapping("/{id}")
     public Optional<Optional<Passenger>> softDelete(@PathVariable @Valid Long id) {
-        return passengerService.softdelete(id);
+
+        try {
+            return passengerService.softdelete(id);
+        } catch (Exception e) {
+            throw new HandleException("ID doesn't exist" + e);
+
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Optional<Passenger>> update(@RequestBody @Valid PassengerDTOU passengerDTOU,
             @PathVariable @Valid Long id) {
 
-        Optional<Passenger> update = passengerService.updatePassenger(passengerDTOU, id);
+        try {
+            Optional<Passenger> update = passengerService.updatePassenger(passengerDTOU, id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(update);
+            if (update.isPresent()) {
+
+                return ResponseEntity.status(HttpStatus.OK).body(update);
+            }
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(null);
+
+        }
 
     }
 }

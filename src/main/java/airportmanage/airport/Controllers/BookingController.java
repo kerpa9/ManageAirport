@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import airportmanage.airport.Config.HandleException.HandleException;
 import airportmanage.airport.Domain.DTOs.Configure.PageableDTO;
 import airportmanage.airport.Domain.DTOs.Create.BookingDTO;
 import airportmanage.airport.Domain.DTOs.Update.BookingDTOU;
@@ -49,30 +51,69 @@ public class BookingController {
     @GetMapping
     private ResponseEntity<PageableDTO> getAllBookings(@PageableDefault(size = 5) Pageable pageable) {
 
-        Page<Booking> booking = bookingService.getAllBooking(pageable);
+        try {
+            Page<Booking> booking = bookingService.getAllBooking(pageable);
 
-        Page<BookingDTO> bookingDTO = booking.map(b -> new BookingDTO(b.getId_booking(), b.getBooking_date(),
-                b.getNro_tickets(), b.getTotal_price(), b.getCreated_at(), b.getUserId(), b.getPassenger().getId(),
-                b.getActive()));
+            Page<BookingDTO> bookingDTO = booking.map(b -> new BookingDTO(b.getId_booking(), b.getBooking_date(),
+                    b.getNro_tickets(), b.getTotal_price(), b.getCreated_at(), b.getUserId(), b.getPassenger().getId(),
+                    b.getActive()));
 
-        return ResponseEntity.ok(PageableDTO.fromPage(bookingDTO));
+            return ResponseEntity.ok(PageableDTO.fromPage(bookingDTO));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
     }
 
     @GetMapping("/{id}")
-    public Optional<Booking> getById(@PathVariable @Valid Long id) {
-        return bookingService.getOneByID(id);
+    public ResponseEntity<Optional<Booking>> getById(@PathVariable @Valid Long id) {
+
+        try {
+
+            if (bookingService.getOneByID(id).isPresent()) {
+
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.getOneByID(id));
+
+            }
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        } catch (Exception e) {
+            throw new HandleException("ID doesn't exist" + e);
+
+        }
     }
 
     @DeleteMapping("/{id}")
     public Optional<Optional<Booking>> softDelete(@PathVariable @Valid Long id) {
-        return bookingService.softDelete(id);
+
+        try {
+            return bookingService.softDelete(id);
+        } catch (Exception e) {
+            throw new HandleException("ID doesn't exist" + e);
+
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Optional<Booking>> update(@RequestBody @Valid BookingDTOU BookingDTOU,
             @PathVariable @Valid Long id) {
-        Optional<Booking> update = bookingService.updateBooking(BookingDTOU, id);
-        return ResponseEntity.status(HttpStatus.CREATED).body(update);
+
+        try {
+
+            Optional<Booking> update = bookingService.updateBooking(BookingDTOU, id);
+
+            if (update.isPresent()) {
+
+                return ResponseEntity.status(HttpStatus.OK).body(update);
+            }
+
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(null);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(null);
+
+        }
     }
 }
