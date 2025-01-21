@@ -3,6 +3,7 @@ package airportmanage.airport.Domain.DTOs.Create;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 import airportmanage.airport.Config.Security.HashPassword;
 import airportmanage.airport.Domain.Enums.Genre;
 import airportmanage.airport.Domain.Models.Booking;
@@ -29,6 +30,7 @@ public record PassengerDTO(
 
     public PassengerDTO {
 
+      
         active = active == null ? true : active;
         HashPassword hash = new HashPassword();
         password = hash.hashingPass(password);

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import airportmanage.airport.Config.HandleException.HandleException;
 import airportmanage.airport.Domain.DTOs.Create.PassengerDTO;
 import airportmanage.airport.Domain.DTOs.Update.PassengerDTOU;
 import airportmanage.airport.Domain.Models.Booking;
@@ -34,45 +35,53 @@ public class PassengerService {
     @Transactional
     public Passenger createPassenger(@Valid PassengerDTO passengerDTO) {
 
-        Passenger passenger = new Passenger();
+        try {
 
-        var user = userRepository.findById(passengerDTO.idUser()).get();
+            Passenger passenger = new Passenger();
 
-        Long loginId = filterLoginService.getUserLogin();
+            var user = userRepository.findById(passengerDTO.idUser()).get();
 
-        Long seqPassenger = passengerRepositroy.generatedInsertSequential(loginId) + 1;
+            Long loginId = filterLoginService.getUserLogin();
 
-        passenger.setId_login(loginId);
-        passenger.setId_passenger(seqPassenger);
-        passenger.setFirst_name(passengerDTO.first_name());
-        passenger.setLast_name(passengerDTO.last_name());
-        passenger.setNro_passport(passengerDTO.nro_passport());
-        passenger.setBorn_date(passengerDTO.born_date());
-        passenger.setGenre(passengerDTO.genre());
-        passenger.setPhone(passengerDTO.phone());
-        passenger.setEmail(passengerDTO.email());
-        passenger.setPassword(passengerDTO.password());
-        passenger.setUser(user);
-        passenger.setActive(passengerDTO.active());
+            Long seqPassenger = passengerRepositroy.generatedInsertSequential(loginId) + 1;
 
-        if (passengerDTO.ticket() != null) {
-            passenger.setTickets(passengerDTO.ticket().stream()
-                    .map(t -> new Tickets(null, null, t.getId_ticket(), t.getType_class(), t.getPrice(),
-                            t.getSeat_number(), t.getCreated_at(), t.getActive(), t.getUser(), t.getPassenger()))
-                    .collect(Collectors.toList()));
+            
+
+            passenger.setId_login(loginId);
+            passenger.setId_passenger(seqPassenger);
+            passenger.setFirst_name(passengerDTO.first_name());
+            passenger.setLast_name(passengerDTO.last_name());
+            passenger.setNro_passport(passengerDTO.nro_passport());
+            passenger.setBorn_date(passengerDTO.born_date());
+            passenger.setGenre(passengerDTO.genre());
+            passenger.setPhone(passengerDTO.phone());
+            passenger.setEmail(passengerDTO.email());
+            passenger.setPassword(passengerDTO.password());
+            passenger.setUser(user);
+            passenger.setActive(passengerDTO.active());
+
+            if (passengerDTO.ticket() != null) {
+                passenger.setTickets(passengerDTO.ticket().stream()
+                        .map(t -> new Tickets(null, null, t.getId_ticket(), t.getType_class(), t.getPrice(),
+                                t.getSeat_number(), t.getCreated_at(), t.getActive(), t.getUser(), t.getPassenger()))
+                        .collect(Collectors.toList()));
+
+            }
+
+            if (passengerDTO.bookings() != null) {
+                passenger.setBookings(passengerDTO.bookings().stream()
+                        .map(b -> new Booking(null, null, b.getId_booking(), null, null, null, null, null, b.getUser(),
+                                b.getPassenger()))
+                        .collect(Collectors.toList()));
+
+            }
+
+            return passengerRepositroy.savePassenger(passenger);
+
+        } catch (Exception e) {
+            throw new HandleException("Error to create passenger");
 
         }
-
-        if (passengerDTO.bookings() != null) {
-            passenger.setBookings(passengerDTO.bookings().stream()
-                    .map(b -> new Booking(null, null, b.getId_booking(), null, null, null, null, null, b.getUser(),
-                            b.getPassenger()))
-                    .collect(Collectors.toList()));
-
-        }
-
-        return passengerRepositroy.savePassenger(passenger);
-
     }
 
     @Transactional(readOnly = true)

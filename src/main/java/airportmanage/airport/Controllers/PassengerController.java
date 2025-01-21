@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import airportmanage.airport.Config.HandleException.HandleException;
 import airportmanage.airport.Domain.DTOs.Configure.PageableDTO;
 import airportmanage.airport.Domain.DTOs.Create.PassengerDTO;
 import airportmanage.airport.Domain.DTOs.Update.PassengerDTOU;
@@ -50,22 +51,32 @@ public class PassengerController {
     @SuppressWarnings("rawtypes")
     @GetMapping
     private ResponseEntity<PageableDTO> getallPassengers(@PageableDefault(size = 5) Pageable pageable) {
+        try {
 
-        Page<Passenger> passenger = passengerService.getAllPassengers(pageable);
+            Page<Passenger> passenger = passengerService.getAllPassengers(pageable);
 
-        Page<PassengerDTO> passengerDTO = passenger
-                .map(p -> new PassengerDTO(p.getId(), p.getFirst_name(), p.getLast_name(), p.getNro_passport(),
-                        p.getBorn_date(),
-                        p.getGenre(), p.getEmail(), p.getPassword(), p.getUserId(), p.getTickets(), p.getBookings(),
-                        p.getPhone(), p.getActive()));
+            Page<PassengerDTO> passengerDTO = passenger
+                    .map(p -> new PassengerDTO(p.getId(), p.getFirst_name(), p.getLast_name(), p.getNro_passport(),
+                            p.getBorn_date(),
+                            p.getGenre(), p.getEmail(), p.getPassword(), p.getUserId(), p.getTickets(), p.getBookings(),
+                            p.getPhone(), p.getActive()));
 
-        return ResponseEntity.ok(PageableDTO.fromPage(passengerDTO));
+            return ResponseEntity.ok(PageableDTO.fromPage(passengerDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
     }
 
     @GetMapping("/{id}")
     public Optional<Passenger> getOneById(@PathVariable @Valid Long id) {
-        return passengerService.getOneById(id);
+        try {
+
+            return passengerService.getOneById(id);
+        } catch (Exception e) {
+            throw new HandleException("ID doesn't exist" + e);
+
+        }
     }
 
     @DeleteMapping("/{id}")
