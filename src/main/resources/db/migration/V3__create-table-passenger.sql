@@ -6,6 +6,7 @@ create table passenger(
         user_id bigint,
         first_name varchar(100) not null,
         last_name varchar(100) not null,
+        nro_passport varchar(50) unique,
         born_date DATETIME DEFAULT CURRENT_TIMESTAMP,
         genre VARCHAR(50) NOT NULL CHECK (genre IN ("male", "female", "prefer_not_to_say")),
         email varchar(100) not null,

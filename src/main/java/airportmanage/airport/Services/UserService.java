@@ -46,7 +46,9 @@ public class UserService {
         if (userDTO.passenger() != null) {
             user.setPassengers(
                     userDTO.passenger().stream()
-                            .map(u -> new Passenger(u.id_passenger(), null, null, u.first_name(), u.last_name(), null,
+                            .map(u -> new Passenger(u.id_passenger(), null, null, u.first_name(), u.last_name(),
+                                    u.nro_passport(),
+                                    null,
                                     u.genre(),
                                     u.email(), null, u.phone(), null, null, u.ticket(), u.bookings()))
                             .collect(Collectors.toList()));

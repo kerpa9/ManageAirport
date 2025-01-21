@@ -54,7 +54,8 @@ public class PassengerController {
         Page<Passenger> passenger = passengerService.getAllPassengers(pageable);
 
         Page<PassengerDTO> passengerDTO = passenger
-                .map(p -> new PassengerDTO(p.getId(), p.getFirst_name(), p.getLast_name(), p.getBorn_date(),
+                .map(p -> new PassengerDTO(p.getId(), p.getFirst_name(), p.getLast_name(), p.getNro_passport(),
+                        p.getBorn_date(),
                         p.getGenre(), p.getEmail(), p.getPassword(), p.getUserId(), p.getTickets(), p.getBookings(),
                         p.getPhone(), p.getActive()));
 

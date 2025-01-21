@@ -46,6 +46,7 @@ public class PassengerService {
         passenger.setId_passenger(seqPassenger);
         passenger.setFirst_name(passengerDTO.first_name());
         passenger.setLast_name(passengerDTO.last_name());
+        passenger.setNro_passport(passengerDTO.nro_passport());
         passenger.setBorn_date(passengerDTO.born_date());
         passenger.setGenre(passengerDTO.genre());
         passenger.setPhone(passengerDTO.phone());

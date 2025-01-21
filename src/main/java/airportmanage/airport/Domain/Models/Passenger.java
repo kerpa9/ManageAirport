@@ -47,6 +47,7 @@ public class Passenger implements IUserOwnedEntity {
     private Long id_passenger;
     private String first_name;
     private String last_name;
+    private String nro_passport;
     private LocalDateTime born_date;
     @Enumerated(EnumType.STRING)
     private Genre genre;
