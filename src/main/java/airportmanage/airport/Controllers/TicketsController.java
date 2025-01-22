@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import airportmanage.airport.Config.HandleException.HandleException;
 import airportmanage.airport.Domain.DTOs.Configure.PageableDTO;
 import airportmanage.airport.Domain.DTOs.Create.TicketsDTO;
 import airportmanage.airport.Domain.DTOs.Update.TicketsDTOU;
@@ -48,32 +49,76 @@ public class TicketsController {
     @SuppressWarnings("rawtypes")
     private ResponseEntity<PageableDTO> getAllTickets(@PageableDefault(size = 5) Pageable pageable) {
 
-        Page<Tickets> tickets = ticketsService.getAllTikets(pageable);
+        try {
 
-        Page<TicketsDTO> ticketsDTO = tickets.map(t -> new TicketsDTO(t.getId_ticket(), t.getType_class(), t.getPrice(),
-                t.getSeat_number(), t.getUserId(), t.getPassenger().getId(), t.getCreated_at(), t.getActive()));
+            Page<Tickets> tickets = ticketsService.getAllTikets(pageable);
 
-        return ResponseEntity.ok(PageableDTO.fromPage(ticketsDTO));
+            Page<TicketsDTO> ticketsDTO = tickets.map(t -> new TicketsDTO(t.getId_ticket(), t.getType_class(),
+                    t.getPrice(),
+                    t.getSeat_number(), t.getUserId(), t.getPassenger().getId(), t.getCreated_at(), t.getActive()));
+
+            return ResponseEntity.ok(PageableDTO.fromPage(ticketsDTO));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
     }
 
     @GetMapping("/{id}")
-    public Optional<Tickets> getOneTicketById(@PathVariable @Valid Long id) {
-        return ticketsService.getOneTicket(id);
+    public ResponseEntity<Optional<Tickets>> getOneTicketById(@PathVariable @Valid Long id) {
+
+        try {
+            if (ticketsService.getOneTicket(id).isPresent()) {
+
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(ticketsService.getOneTicket(id));
+
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        } catch (Exception e) {
+            throw new HandleException("ID doesn't exist" + e);
+
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Optional<Tickets>> updateTicket(@RequestBody @Valid TicketsDTOU ticketsDTOU,
             @PathVariable @Valid Long id) {
 
-        Optional<Tickets> update = ticketsService.updateTicket(ticketsDTOU, id);
+        try {
 
-        return ResponseEntity.status(HttpStatus.OK).body(update);
+            Optional<Tickets> update = ticketsService.updateTicket(ticketsDTOU, id);
+
+            if (update.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK).body(update);
+
+            }
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        } catch (Exception e) {
+
+            throw new HandleException("ID doesn't exist" + e);
+
+        }
+
     }
 
     @DeleteMapping("/{id}")
-    public Optional<Optional<Tickets>> softDelete(@PathVariable @Valid Long id) {
-        return ticketsService.softDelete(id);
+    public ResponseEntity<Optional<Optional<Tickets>>> softDelete(@PathVariable @Valid Long id) {
+
+        try {
+            if (ticketsService.softDelete(id).isPresent()) {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(ticketsService.softDelete(id));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        } catch (Exception e) {
+
+            throw new HandleException("ID doesn't exist" + e);
+
+        }
     }
 
 }
