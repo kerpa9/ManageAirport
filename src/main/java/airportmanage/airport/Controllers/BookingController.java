@@ -86,10 +86,15 @@ public class BookingController {
     }
 
     @DeleteMapping("/{id}")
-    public Optional<Optional<Booking>> softDelete(@PathVariable @Valid Long id) {
+    public ResponseEntity<Optional<Optional<Booking>>> softDelete(@PathVariable @Valid Long id) {
 
         try {
-            return bookingService.softDelete(id);
+            if (bookingService.softDelete(id).isPresent()) {
+
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.softDelete(id));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            
         } catch (Exception e) {
             throw new HandleException("ID doesn't exist" + e);
 
