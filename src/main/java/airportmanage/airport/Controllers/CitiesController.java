@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import airportmanage.airport.Config.HandleException.HandleException;
 import airportmanage.airport.Domain.DTOs.Configure.PageableDTO;
 import airportmanage.airport.Domain.DTOs.Create.CityDTO;
 import airportmanage.airport.Domain.DTOs.Update.CityDTOU;
@@ -53,30 +54,70 @@ public class CitiesController {
     @GetMapping
     private ResponseEntity<PageableDTO> getAllCities(@PageableDefault(size = 5) Pageable pageable) {
 
-        Page<City> city = citiesService.getAllCity(pageable);
+        try {
+            Page<City> city = citiesService.getAllCity(pageable);
 
-        Page<CityDTO> cityDTO = city.map(c -> new CityDTO(c.getId_city(), c.getName(), c.getCountry(), c.getLat(),
-                c.getLon(), c.getCreated_at(), c.getOrigin(), c.getDestination(), c.getActive()));
+            Page<CityDTO> cityDTO = city.map(c -> new CityDTO(c.getId_city(), c.getName(), c.getCountry(), c.getLat(),
+                    c.getLon(), c.getCreated_at(), c.getOrigin(), c.getDestination(), c.getActive()));
 
-        return ResponseEntity.ok(PageableDTO.fromPage(cityDTO));
+            return ResponseEntity.ok(PageableDTO.fromPage(cityDTO));
+
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
     }
 
     @GetMapping("/{id}")
-    public Optional<City> getById(@PathVariable @Valid Long id) {
-        return citiesService.getOneByID(id);
+    public ResponseEntity<Optional<City>> getById(@PathVariable @Valid Long id) {
+
+        try {
+            if (citiesService.getOneByID(id).isPresent()) {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(citiesService.getOneByID(id));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        } catch (Exception e) {
+            throw new HandleException("ID doesn't exist" + e);
+
+        }
     }
 
     @DeleteMapping("/{id}")
-    public Optional<Optional<City>> softDelete(@PathVariable @Valid Long id) {
-        return citiesService.softDelete(id);
+    public ResponseEntity<Optional<Optional<City>>> softDelete(@PathVariable @Valid Long id) {
+
+        try {
+
+            if (citiesService.softDelete(id).isPresent()) {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(citiesService.softDelete(id));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        } catch (Exception e) {
+
+            throw new HandleException("ID doesn't exist" + e);
+
+        }
+
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Optional<City>> update(@RequestBody @Valid CityDTOU cityDTOU, @PathVariable Long id) {
-        Optional<City> update = citiesService.update(cityDTOU, id);
 
-        return ResponseEntity.status(HttpStatus.PROCESSING).body(update);
+        try {
+
+            Optional<City> update = citiesService.update(cityDTOU, id);
+
+            if (citiesService.update(cityDTOU, id).isPresent()) {
+                return ResponseEntity.status(HttpStatus.PROCESSING).body(update);
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        } catch (Exception e) {
+            throw new HandleException("ID doesn't exist" + e);
+
+        }
 
     }
 
