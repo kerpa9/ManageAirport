@@ -2,6 +2,7 @@ package airportmanage.airport.Domain.DTOs.Create;
 
 import java.time.LocalDateTime;
 
+import airportmanage.airport.Domain.Enums.FlightStatus;
 import jakarta.validation.constraints.NotNull;
 
 public record FlightDTO(
@@ -10,14 +11,19 @@ public record FlightDTO(
         Long destination_id,
         Long idPlane,
         @NotNull LocalDateTime departure_time,
-        @NotNull LocalDateTime check_in,
+        LocalDateTime check_in_start,
+        LocalDateTime check_in_end,
+        Integer available_seats,
         @NotNull LocalDateTime created_at,
+        FlightStatus flight_status,
         Boolean active
 
 ) {
 
     public FlightDTO {
         active = active == null ? true : active;
+        flight_status = flight_status == null ? FlightStatus.pending : flight_status;
+
     }
 
 }

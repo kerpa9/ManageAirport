@@ -13,6 +13,8 @@ create table flight(
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         city varchar(200),
         plane varchar(200),
+        flight_status VARCHAR(50) NOT NULL CHECK (flight_status IN ("pending", "scheduled", "boarding", "in_progress", "delayed","done","cancelled","diverted","technical_stop","returned"
+        )) DEFAULT 'pending',
         active boolean default true,
         INDEX idx_id_login (id_login),
         INDEX idx_id_login_id (id_login, id),

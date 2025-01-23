@@ -57,7 +57,9 @@ public class FlightController {
             Page<FlightDTO> flightDTO = flight.map(
                     f -> new FlightDTO(f.getId_flight(), f.getOrigin().getId(), f.getDestination().getId(),
                             f.getPlane().getId(),
-                            f.getDeparture_time(), f.getCheck_in_start(), f.getCreated_at(), f.getActive()));
+                            f.getDeparture_time(), f.getCheck_in_start(), f.getCheck_in_end(), f.getAvailable_seats(),
+                            f.getCreated_at(), f.getFlight_status(),
+                            f.getActive()));
 
             return ResponseEntity.ok(PageableDTO.fromPage(flightDTO));
 

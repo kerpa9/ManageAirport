@@ -48,11 +48,14 @@ public class FlightService {
         flight.setId_login(loginId);
         flight.setId_flight(seqFlight);
         flight.setDeparture_time(flightDTO.departure_time());
-        flight.setCheck_in_start(flightDTO.check_in());
+        flight.setCheck_in_start(flightDTO.check_in_start());
+        flight.setCheck_in_end(flightDTO.check_in_end());
+        flight.setAvailable_seats(flightDTO.available_seats());
         flight.setCreated_at(flightDTO.created_at());
         flight.setOrigin(origin);
         flight.setDestination(destination);
         flight.setPlane(plane);
+        flight.setFlight_status(flightDTO.flight_status());
         flight.setActive(flightDTO.active());
 
         return flightRepository.saveFlight(flight);

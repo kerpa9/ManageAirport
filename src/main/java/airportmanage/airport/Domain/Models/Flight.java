@@ -39,7 +39,6 @@ public class Flight implements IUserOwnedEntity {
     private Long id_login;
     private Long id_flight;
     private LocalDateTime departure_time;
-    // private LocalDateTime check_in;
     private LocalDateTime check_in_start;
     private LocalDateTime check_in_end;
     private Integer available_seats;
