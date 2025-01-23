@@ -48,7 +48,7 @@ public class FlightService {
         flight.setId_login(loginId);
         flight.setId_flight(seqFlight);
         flight.setDeparture_time(flightDTO.departure_time());
-        flight.setCheck_in(flightDTO.check_in());
+        flight.setCheck_in_start(flightDTO.check_in());
         flight.setCreated_at(flightDTO.created_at());
         flight.setOrigin(origin);
         flight.setDestination(destination);
@@ -96,7 +96,7 @@ public class FlightService {
 
         return updateFlight.map(flight -> {
             flight.setDeparture_time(flightDTOU.departure_time());
-            flight.setCheck_in(flightDTOU.check_in());
+            flight.setCheck_in_start(flightDTOU.check_in());
             flight.setCreated_at(flightDTOU.created_at());
             return flightRepository.saveFlight(flight);
 

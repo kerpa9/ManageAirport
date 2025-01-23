@@ -46,7 +46,8 @@ public class PlaneService {
 
         if (planeDTO.flight() != null) {
             plane.setFlight(planeDTO.flight().stream()
-                    .map(f -> new Flight(null, loginId, seqPlane, null, f.getCheck_in(), f.getCreated_at(), null,
+                    .map(f -> new Flight(null, loginId, seqPlane, null, f.getCheck_in_start(), null, null,
+                            f.getCreated_at(), null, null,
                             f.getOrigin(), f.getDestination(), f.getPlane()))
                     .collect(Collectors.toList()));
         }

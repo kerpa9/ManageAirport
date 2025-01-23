@@ -49,7 +49,16 @@ public class BookingService {
         booking.setId_login(loginId);
         booking.setId_booking(seqBooking);
         booking.setBooking_date(bookingDTO.booking_date());
-        booking.setNro_tickets(bookingDTO.nro_tickets());
+
+        if (bookingDTO.nro_tickets() <= 5) {
+
+            booking.setNro_tickets(bookingDTO.nro_tickets());
+
+        } else {
+
+            booking.setNro_tickets(0);
+        }
+
         booking.setTotal_price(bookingDTO.total_price());
         booking.setCreated_at(bookingDTO.created_at());
         booking.setPassenger(passenger);

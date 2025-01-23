@@ -6,7 +6,10 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
+import airportmanage.airport.Domain.Enums.FlightStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,8 +39,13 @@ public class Flight implements IUserOwnedEntity {
     private Long id_login;
     private Long id_flight;
     private LocalDateTime departure_time;
-    private LocalDateTime check_in;
+    // private LocalDateTime check_in;
+    private LocalDateTime check_in_start;
+    private LocalDateTime check_in_end;
+    private Integer available_seats;
     private LocalDateTime created_at;
+    @Enumerated(EnumType.STRING)
+    private FlightStatus flight_status;
     private Boolean active;
 
     @JsonBackReference("city-origin-flights")

@@ -55,13 +55,17 @@ public class CitiesService {
 
         if (cityDTO.destination() != null) {
             city.setDestination(cityDTO.destination().stream()
-                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, city, null, f.getPlane()))
+                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, null, null, null, city,
+                            null,
+                            f.getPlane()))
                     .collect(Collectors.toList()));
         }
 
         if (cityDTO.origin() != null) {
             city.setOrigin(cityDTO.origin().stream()
-                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, null, city, f.getPlane()))
+                    .map(f -> new Flight(loginId, loginId, seqCity, null, null, null, null, null, null, null, null,
+                            city,
+                            f.getPlane()))
                     .collect(Collectors.toList()));
         }
 
