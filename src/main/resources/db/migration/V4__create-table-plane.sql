@@ -8,8 +8,7 @@ create table plane(
         max_capacity integer not null,
         airline VARCHAR(50) NOT NULL CHECK (airline IN ("AeroGlobe",  "AeroTronix", "Avianca", "AeroMexico", "Qtar", "Emirates","Latam")),
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        plane_status VARCHAR(50) NOT NULL CHECK (flight_status IN ("active", "maintenance", "repair", "inactive"
-        )) DEFAULT 'active',
+        plane_status VARCHAR(50) NOT NULL CHECK (plane_status IN ("active", "maintenance", "repair", "inactive")) DEFAULT 'active',
         active boolean default true,
         INDEX idx_id_login (id_login),
         INDEX idx_id_login_id (id_login, id),

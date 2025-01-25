@@ -63,6 +63,7 @@ public class BookingService {
         booking.setCreated_at(bookingDTO.created_at());
         booking.setPassenger(passenger);
         booking.setUser(user);
+        booking.setBooking_status(bookingDTO.booking_status());
         booking.setActive(bookingDTO.active());
 
         return bookingRepository.saveBooking(booking);
