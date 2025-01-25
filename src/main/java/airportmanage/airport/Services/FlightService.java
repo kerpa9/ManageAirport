@@ -99,7 +99,10 @@ public class FlightService {
 
         return updateFlight.map(flight -> {
             flight.setDeparture_time(flightDTOU.departure_time());
-            flight.setCheck_in_start(flightDTOU.check_in());
+            flight.setCheck_in_start(flightDTOU.check_in_start());
+            flight.setCheck_in_end(flightDTOU.check_in_end());
+            flight.setAvailable_seats(flightDTOU.available_seats());
+            flight.setFlight_status(flightDTOU.flight_status());
             flight.setCreated_at(flightDTOU.created_at());
             return flightRepository.saveFlight(flight);
 

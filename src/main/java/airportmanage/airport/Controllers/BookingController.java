@@ -55,7 +55,8 @@ public class BookingController {
             Page<Booking> booking = bookingService.getAllBooking(pageable);
 
             Page<BookingDTO> bookingDTO = booking.map(b -> new BookingDTO(b.getId_booking(), b.getBooking_date(),
-                    b.getNro_tickets(), b.getTotal_price(), b.getCreated_at(), b.getUserId(), b.getPassenger().getId(),
+                    b.getNro_tickets(), b.getTotal_price(), b.getCreated_at(), b.getBooking_status(), b.getUserId(),
+                    b.getPassenger().getId(),
                     b.getActive()));
 
             return ResponseEntity.ok(PageableDTO.fromPage(bookingDTO));
@@ -94,7 +95,7 @@ public class BookingController {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(bookingService.softDelete(id));
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            
+
         } catch (Exception e) {
             throw new HandleException("ID doesn't exist" + e);
 

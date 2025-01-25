@@ -63,7 +63,7 @@ public class UserService {
 
         if (userDTO.booking() != null) {
             user.setBookings(userDTO.booking().stream().map(b -> new Booking(b.id_booking(), null, null, null,
-                    b.nro_tickets(), b.total_price(), null, null, null, null)).collect(Collectors.toList()));
+                    b.nro_tickets(), b.total_price(), null, null,null, null, null)).collect(Collectors.toList()));
         }
 
         emailSender.sendValidateEmail(user);

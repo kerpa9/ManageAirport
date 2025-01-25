@@ -45,8 +45,6 @@ public class PassengerService {
 
             Long seqPassenger = passengerRepositroy.generatedInsertSequential(loginId) + 1;
 
-            
-
             passenger.setId_login(loginId);
             passenger.setId_passenger(seqPassenger);
             passenger.setFirst_name(passengerDTO.first_name());
@@ -70,7 +68,8 @@ public class PassengerService {
 
             if (passengerDTO.bookings() != null) {
                 passenger.setBookings(passengerDTO.bookings().stream()
-                        .map(b -> new Booking(null, null, b.getId_booking(), null, null, null, null, null, b.getUser(),
+                        .map(b -> new Booking(null, null, b.getId_booking(), b.getBooking_date(), null, null, null,
+                                b.getBooking_status(), b.getActive(), b.getUser(),
                                 b.getPassenger()))
                         .collect(Collectors.toList()));
 

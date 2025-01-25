@@ -6,7 +6,10 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
+import airportmanage.airport.Domain.Enums.BookingStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,6 +42,8 @@ public class Booking implements IUserOwnedEntity {
     private Integer nro_tickets;
     private Double total_price;
     private LocalDateTime created_at;
+    @Enumerated(EnumType.STRING)
+    private BookingStatus booking_status;
     private Boolean active;
 
     @JsonBackReference("user-bookings")
