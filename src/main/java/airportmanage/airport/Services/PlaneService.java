@@ -42,12 +42,14 @@ public class PlaneService {
         plane.setMax_capacity(planeDTO.max_capacity());
         plane.setAirline(planeDTO.airline());
         plane.setCreated_at(planeDTO.created_at());
+        plane.setPlane_status(planeDTO.plane_status());
         plane.setActive(planeDTO.active());
 
         if (planeDTO.flight() != null) {
             plane.setFlight(planeDTO.flight().stream()
-                    .map(f -> new Flight(null, loginId, seqPlane, null, f.getCheck_in_start(), null, null,
-                            f.getCreated_at(), null, null,
+                    .map(f -> new Flight(null, loginId, seqPlane, null, f.getCheck_in_start(), f.getCheck_in_end(),
+                            null,
+                            f.getCreated_at(), f.getFlight_status(), f.getActive(),
                             f.getOrigin(), f.getDestination(), f.getPlane()))
                     .collect(Collectors.toList()));
         }
@@ -86,6 +88,7 @@ public class PlaneService {
             plane.setModel(planedDTOU.model());
             plane.setMax_capacity(planedDTOU.max_capacity());
             plane.setAirline(planedDTOU.airline());
+            plane.setPlane_status(planedDTOU.plane_status());
             plane.setCreated_at(planedDTOU.created_at());
             return planeRepository.savePlane(plane);
         });

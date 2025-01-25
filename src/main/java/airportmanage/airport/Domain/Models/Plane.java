@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
 import airportmanage.airport.Domain.Enums.Airline;
+import airportmanage.airport.Domain.Enums.PlaneStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -44,6 +45,8 @@ public class Plane implements IUserOwnedEntity {
     private Integer plane_number;
     private String model;
     private Integer max_capacity;
+    @Enumerated(EnumType.STRING)
+    private PlaneStatus plane_status;
     @Enumerated(EnumType.STRING)
     private Airline airline;
     private LocalDateTime created_at;

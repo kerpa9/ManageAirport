@@ -107,6 +107,7 @@ public class BookingService {
         return updateBook.map(booking -> {
             booking.setNro_tickets(bookingDTOU.nro_tickets());
             booking.setTotal_price(bookingDTOU.total_price());
+            booking.setBooking_status(bookingDTOU.booking_status());
             booking.setCreated_at(bookingDTOU.created_at());
             return bookingRepository.saveBooking(booking);
         });

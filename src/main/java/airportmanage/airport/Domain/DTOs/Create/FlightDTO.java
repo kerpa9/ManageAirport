@@ -3,6 +3,8 @@ package airportmanage.airport.Domain.DTOs.Create;
 import java.time.LocalDateTime;
 
 import airportmanage.airport.Domain.Enums.FlightStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 
 public record FlightDTO(
@@ -15,6 +17,7 @@ public record FlightDTO(
         LocalDateTime check_in_end,
         Integer available_seats,
         @NotNull LocalDateTime created_at,
+        @Enumerated(EnumType.STRING)
         FlightStatus flight_status,
         Boolean active
 

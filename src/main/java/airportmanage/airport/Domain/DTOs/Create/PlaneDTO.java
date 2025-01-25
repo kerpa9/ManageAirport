@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import airportmanage.airport.Domain.Enums.Airline;
+import airportmanage.airport.Domain.Enums.PlaneStatus;
 import airportmanage.airport.Domain.Models.Flight;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,11 +19,13 @@ public record PlaneDTO(
         List<Flight> flight,
         @NotNull @Enumerated(EnumType.STRING) Airline airline,
         LocalDateTime created_at,
+        @Enumerated(EnumType.STRING) PlaneStatus plane_status,
         Boolean active
 
 ) {
     public PlaneDTO {
         active = active == null ? true : active;
+        plane_status = plane_status == null ? PlaneStatus.active : plane_status;
 
     }
 

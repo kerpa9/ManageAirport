@@ -56,7 +56,7 @@ public class PlaneController {
             Page<Plane> plane = planeService.getAllPlane(pageable);
 
             Page<PlaneDTO> planeDTO = plane.map(p -> new PlaneDTO(p.getPlane_number(), p.getModel(),
-                    p.getMax_capacity(), p.getFlight(), p.getAirline(), p.getCreated_at(), p.getActive()));
+                    p.getMax_capacity(), p.getFlight(), p.getAirline(), p.getCreated_at(),p.getPlane_status(), p.getActive()));
 
             return ResponseEntity.ok(PageableDTO.fromPage(planeDTO));
 
