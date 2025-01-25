@@ -50,7 +50,6 @@ public class TicketsService {
         tickets.setCreated_at(ticketsDTO.created_at());
         tickets.setPassenger(passenger);
         tickets.setUser(user);
-        ;
         tickets.setActive(ticketsDTO.active());
 
         return ticketsRepository.saveTicket(tickets);

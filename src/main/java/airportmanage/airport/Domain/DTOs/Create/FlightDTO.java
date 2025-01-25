@@ -16,7 +16,7 @@ public record FlightDTO(
         LocalDateTime check_in_start,
         LocalDateTime check_in_end,
         Integer available_seats,
-        @NotNull LocalDateTime created_at,
+        LocalDateTime created_at,
         @Enumerated(EnumType.STRING)
         FlightStatus flight_status,
         Boolean active
