@@ -49,6 +49,20 @@ public interface TicketsRepository extends BaseRepository<Tickets> {
                                 p -> Optional.ofNullable(findByIdActive(id)),
                                 "READ_BY_ID");
         }
+        default Optional<Tickets> findActiveTicketByIdUpdate(Long id, Long loginId) {
+                return genericValidateFunction(
+                                createDummyEntity(loginId),
+                                DEFAULT_AUTHORIZED_ROLESU,
+                                p -> Optional.ofNullable(findByIdActive(id)),
+                                "READ_BY_ID");
+        }
+        default Optional<Tickets> findActiveTicketByIdDelete(Long id, Long loginId) {
+                return genericValidateFunction(
+                                createDummyEntity(loginId),
+                                DEFAULT_AUTHORIZED_ROLESD,
+                                p -> Optional.ofNullable(findByIdActive(id)),
+                                "READ_BY_ID");
+        }
 
         @Query("""
                             SELECT p FROM Tickets p

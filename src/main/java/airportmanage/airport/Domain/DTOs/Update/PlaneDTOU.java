@@ -1,6 +1,5 @@
 package airportmanage.airport.Domain.DTOs.Update;
 
-import java.time.LocalDateTime;
 import airportmanage.airport.Domain.Enums.Airline;
 import airportmanage.airport.Domain.Enums.PlaneStatus;
 import jakarta.persistence.EnumType;
@@ -12,8 +11,8 @@ public record PlaneDTOU(
                 String model,
                 Integer max_capacity,
                 @Enumerated(EnumType.STRING) Airline airline,
-                @Enumerated(EnumType.STRING) PlaneStatus plane_status,
-                LocalDateTime created_at
+                @Enumerated(EnumType.STRING) PlaneStatus plane_status
+
 
 ) {
 

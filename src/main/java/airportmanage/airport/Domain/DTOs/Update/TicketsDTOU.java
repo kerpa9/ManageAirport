@@ -1,6 +1,5 @@
 package airportmanage.airport.Domain.DTOs.Update;
 
-import java.time.LocalDateTime;
 
 import airportmanage.airport.Domain.Enums.TypeClass;
 import jakarta.persistence.EnumType;
@@ -10,7 +9,6 @@ public record TicketsDTOU(
 
         @Enumerated(EnumType.STRING) TypeClass type_class,
         Double price,
-        Integer seat_number,
-        LocalDateTime created_at) {
+        Integer seat_number) {
 
 }

@@ -48,6 +48,22 @@ public interface CitiesRepository extends BaseRepository<City> {
                 "READ_BY_ID");
     }
 
+    default Optional<City> findActiveCityByIdUpdate(Long id, Long loginId) {
+        return genericValidateFunction(
+                createDummyEntity(loginId),
+                DEFAULT_AUTHORIZED_ROLESU,
+                p -> Optional.ofNullable(findByIdActive(id)),
+                "READ_BY_ID");
+    }
+
+    default Optional<City> findActiveCityByIdDelete(Long id, Long loginId) {
+        return genericValidateFunction(
+                createDummyEntity(loginId),
+                DEFAULT_AUTHORIZED_ROLESD,
+                p -> Optional.ofNullable(findByIdActive(id)),
+                "READ_BY_ID");
+    }
+
     @Query("""
                 SELECT p FROM City p
                 WHERE p.active = true

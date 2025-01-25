@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import airportmanage.airport.Config.HandleException.HandleException;
 import airportmanage.airport.Domain.DTOs.Create.FlightDTO;
 import airportmanage.airport.Domain.DTOs.Update.FlightDTOU;
 import airportmanage.airport.Domain.Models.Flight;
@@ -52,8 +53,14 @@ public class FlightService {
         flight.setCheck_in_end(flightDTO.check_in_end());
         flight.setAvailable_seats(flightDTO.available_seats());
         flight.setCreated_at(flightDTO.created_at());
-        flight.setOrigin(origin);
-        flight.setDestination(destination);
+
+        if (origin != destination) {
+            flight.setOrigin(origin);
+            flight.setDestination(destination);
+        } else {
+            throw new HandleException("Error, destination or origin not valid");
+        }
+
         flight.setPlane(plane);
         flight.setFlight_status(flightDTO.flight_status());
         flight.setActive(flightDTO.active());
@@ -85,7 +92,7 @@ public class FlightService {
     @Transactional
     public Optional<Optional<Flight>> softDelete(Long id) {
 
-        Optional<Flight> setSoftDelete = flightRepository.findActiveFlightById(id, filterLoginService.getUserLogin());
+        Optional<Flight> setSoftDelete = flightRepository.findActiveFlightByIdDelete(id, filterLoginService.getUserLogin());
 
         return setSoftDelete.map(flight -> {
             return flight.setStatusInactiveFlight();
@@ -95,7 +102,7 @@ public class FlightService {
     @Transactional
     public Optional<Flight> updateFlight(@Valid FlightDTOU flightDTOU, Long id) {
 
-        Optional<Flight> updateFlight = flightRepository.findActiveFlightById(id, filterLoginService.getUserLogin());
+        Optional<Flight> updateFlight = flightRepository.findActiveFlightByIdUpdate(id, filterLoginService.getUserLogin());
 
         return updateFlight.map(flight -> {
             flight.setDeparture_time(flightDTOU.departure_time());
@@ -103,7 +110,6 @@ public class FlightService {
             flight.setCheck_in_end(flightDTOU.check_in_end());
             flight.setAvailable_seats(flightDTOU.available_seats());
             flight.setFlight_status(flightDTOU.flight_status());
-            flight.setCreated_at(flightDTOU.created_at());
             return flightRepository.saveFlight(flight);
 
         });

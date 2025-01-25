@@ -38,7 +38,7 @@ public class BookingService {
 
         Long loginId = filterLoginService.getUserLogin();
 
-        var user = userRepository.findById(bookingDTO.idUser()).get();
+        var user = userRepository.findById(filterLoginService.getUserLogin()).get();
 
         var passenger = passengerRepositroy.findById(bookingDTO.idPassenger()).get();
 
@@ -103,13 +103,12 @@ public class BookingService {
 
     @Transactional
     public Optional<Booking> updateBooking(@Valid BookingDTOU bookingDTOU, Long id) {
-        Optional<Booking> updateBook = bookingRepository.findActiveBookingById(id, filterLoginService.getUserLogin());
+        Optional<Booking> updateBook = bookingRepository.findActiveBookingByIdUpdate(id, filterLoginService.getUserLogin());
 
         return updateBook.map(booking -> {
             booking.setNro_tickets(bookingDTOU.nro_tickets());
             booking.setTotal_price(bookingDTOU.total_price());
             booking.setBooking_status(bookingDTOU.booking_status());
-            booking.setCreated_at(bookingDTOU.created_at());
             return bookingRepository.saveBooking(booking);
         });
     }

@@ -12,8 +12,7 @@ public record FlightDTOU(
                 LocalDateTime check_in_start,
                 LocalDateTime check_in_end,
                 Integer available_seats,
-                @Enumerated(EnumType.STRING) FlightStatus flight_status,
-                LocalDateTime created_at
+                @Enumerated(EnumType.STRING) FlightStatus flight_status
 
 ) {
 

@@ -47,6 +47,20 @@ public interface PlaneRepository extends BaseRepository<Plane> {
                                 p -> Optional.ofNullable(findByIdActive(id)),
                                 "READ_BY_ID");
         }
+        default Optional<Plane> findActivePlaneByIdUpdate(Long id, Long loginId) {
+                return genericValidateFunction(
+                                createDummyEntity(loginId),
+                                DEFAULT_AUTHORIZED_ROLESU,
+                                p -> Optional.ofNullable(findByIdActive(id)),
+                                "READ_BY_ID");
+        }
+        default Optional<Plane> findActivePlaneByIdDelete(Long id, Long loginId) {
+                return genericValidateFunction(
+                                createDummyEntity(loginId),
+                                DEFAULT_AUTHORIZED_ROLESD,
+                                p -> Optional.ofNullable(findByIdActive(id)),
+                                "READ_BY_ID");
+        }
 
         @Query("""
                             SELECT p FROM Plane p

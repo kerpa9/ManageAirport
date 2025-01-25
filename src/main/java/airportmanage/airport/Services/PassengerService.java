@@ -39,7 +39,7 @@ public class PassengerService {
 
             Passenger passenger = new Passenger();
 
-            var user = userRepository.findById(passengerDTO.idUser()).get();
+            var user = userRepository.findById(filterLoginService.getUserLogin()).get();
 
             Long loginId = filterLoginService.getUserLogin();
 
@@ -105,7 +105,7 @@ public class PassengerService {
     @Transactional
     public Optional<Optional<Passenger>> softdelete(Long id) {
 
-        Optional<Passenger> setDoftDelete = passengerRepositroy.findActivePassengerById(id,
+        Optional<Passenger> setDoftDelete = passengerRepositroy.findActivePassengerByIdDelete(id,
                 filterLoginService.getUserLogin());
 
         return setDoftDelete.map(passenger -> {
@@ -115,7 +115,7 @@ public class PassengerService {
 
     @Transactional
     public Optional<Passenger> updatePassenger(@Valid PassengerDTOU passengerDTOU, Long id) {
-        Optional<Passenger> updatePassenger = passengerRepositroy.findActivePassengerById(id,
+        Optional<Passenger> updatePassenger = passengerRepositroy.findActivePassengerByIdUpdate(id,
                 filterLoginService.getUserLogin());
 
         return updatePassenger.map(passenger -> {

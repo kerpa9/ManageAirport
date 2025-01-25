@@ -47,6 +47,20 @@ public interface PassengerRepository extends BaseRepository<Passenger> {
                 p -> Optional.ofNullable(findByIdActive(id)),
                 "READ_BY_ID");
     }
+    default Optional<Passenger> findActivePassengerByIdUpdate(Long id, Long loginId) {
+        return genericValidateFunction(
+                createDummyEntity(loginId),
+                DEFAULT_AUTHORIZED_ROLESU,
+                p -> Optional.ofNullable(findByIdActive(id)),
+                "READ_BY_ID");
+    }
+    default Optional<Passenger> findActivePassengerByIdDelete(Long id, Long loginId) {
+        return genericValidateFunction(
+                createDummyEntity(loginId),
+                DEFAULT_AUTHORIZED_ROLESD,
+                p -> Optional.ofNullable(findByIdActive(id)),
+                "READ_BY_ID");
+    }
 
     @Query("""
                 SELECT p FROM Passenger p

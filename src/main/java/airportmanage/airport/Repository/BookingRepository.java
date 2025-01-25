@@ -49,6 +49,20 @@ public interface BookingRepository extends BaseRepository<Booking> {
                 p -> Optional.ofNullable(findByIdActive(id)),
                 "READ_BY_ID");
     }
+    default Optional<Booking> findActiveBookingByIdUpdate(Long id, Long loginId) {
+        return genericValidateFunction(
+                createDummyEntity(loginId),
+                DEFAULT_AUTHORIZED_ROLESU,
+                p -> Optional.ofNullable(findByIdActive(id)),
+                "READ_BY_ID");
+    }
+    default Optional<Booking> findActiveBookingByIdDelete(Long id, Long loginId) {
+        return genericValidateFunction(
+                createDummyEntity(loginId),
+                DEFAULT_AUTHORIZED_ROLESD,
+                p -> Optional.ofNullable(findByIdActive(id)),
+                "READ_BY_ID");
+    }
 
     @Query("""
                 SELECT p FROM Booking p

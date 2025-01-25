@@ -96,7 +96,7 @@ public class CitiesService {
 
     @Transactional
     public Optional<Optional<City>> softDelete(Long id) {
-        Optional<City> setSoftDelete = citiesRepository.findActiveCityById(id, filterLoginService.getUserLogin());
+        Optional<City> setSoftDelete = citiesRepository.findActiveCityByIdUpdate(id, filterLoginService.getUserLogin());
 
         return setSoftDelete.map(city -> {
             return city.setStatusInactiveCity();
@@ -107,7 +107,7 @@ public class CitiesService {
     @Transactional
     public Optional<City> update(@Valid CityDTOU cityDTOU, Long id) {
 
-        Optional<City> updateCity = citiesRepository.findActiveCityById(id, filterLoginService.getUserLogin());
+        Optional<City> updateCity = citiesRepository.findActiveCityByIdDelete(id, filterLoginService.getUserLogin());
 
         return updateCity.map(city -> {
             city.setName(cityDTOU.name());

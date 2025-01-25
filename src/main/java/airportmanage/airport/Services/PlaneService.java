@@ -81,7 +81,7 @@ public class PlaneService {
     @Transactional
     public Optional<Plane> updatePlane(@Valid PlaneDTOU planedDTOU, Long id) {
 
-        Optional<Plane> updatePlane = planeRepository.findActivePlaneById(id, filterLoginService.getUserLogin());
+        Optional<Plane> updatePlane = planeRepository.findActivePlaneByIdUpdate(id, filterLoginService.getUserLogin());
 
         return updatePlane.map(plane -> {
             plane.setPlane_number(planedDTOU.plane_number());
@@ -89,7 +89,6 @@ public class PlaneService {
             plane.setMax_capacity(planedDTOU.max_capacity());
             plane.setAirline(planedDTOU.airline());
             plane.setPlane_status(planedDTOU.plane_status());
-            plane.setCreated_at(planedDTOU.created_at());
             return planeRepository.savePlane(plane);
         });
     }
@@ -97,7 +96,7 @@ public class PlaneService {
     @Transactional
     public Optional<Optional<Plane>> softDelete(Long id) {
 
-        Optional<Plane> setSoftDelete = planeRepository.findActivePlaneById(id, filterLoginService.getUserLogin());
+        Optional<Plane> setSoftDelete = planeRepository.findActivePlaneByIdDelete(id, filterLoginService.getUserLogin());
 
         return setSoftDelete.map(plane -> {
             return plane.setStatusInactivePlane();

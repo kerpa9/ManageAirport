@@ -34,7 +34,7 @@ public class TicketsService {
 
         Long loginId = filterLoginService.getUserLogin();
 
-        var user = userRepository.findById(ticketsDTO.idUser()).get();
+        var user = userRepository.findById(filterLoginService.getUserLogin()).get();
 
         var passenger = passengerRepositroy.findById(ticketsDTO.idPassenger()).get();
 
@@ -84,7 +84,6 @@ public class TicketsService {
 
             ticket.setType_class(ticketDtou.type_class());
             ticket.setPrice(ticketDtou.price());
-            ticket.setCreated_at(ticketDtou.created_at());
             ticket.setSeat_number(ticketDtou.seat_number());
 
             return ticketsRepository.saveTicket(ticket);
