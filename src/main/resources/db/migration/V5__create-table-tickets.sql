@@ -10,7 +10,7 @@ create table tickets(
         seat_number integer not null,
         user varchar(200),
         passenger varchar(200),
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         active boolean default true,
         INDEX idx_id_login (id_login),
         INDEX idx_id_login_id (id_login, id),

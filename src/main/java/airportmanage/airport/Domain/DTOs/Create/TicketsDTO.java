@@ -19,6 +19,7 @@ public record TicketsDTO(
 
     public TicketsDTO {
         active = active == null ? true : active;
+        created_at = LocalDateTime.now();
     }
 
 }

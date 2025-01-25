@@ -25,6 +25,7 @@ public record FlightDTO(
 
     public FlightDTO {
         active = active == null ? true : active;
+        created_at = LocalDateTime.now();
         flight_status = flight_status == null ? FlightStatus.pending : flight_status;
 
     }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -12,6 +14,7 @@ import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
 import airportmanage.airport.Domain.Enums.Airline;
 import airportmanage.airport.Domain.Enums.PlaneStatus;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -49,7 +52,11 @@ public class Plane implements IUserOwnedEntity {
     private PlaneStatus plane_status;
     @Enumerated(EnumType.STRING)
     private Airline airline;
+
+    @Column(updatable = false, nullable = false)
+    @CreationTimestamp
     private LocalDateTime created_at;
+
     private Boolean active;
 
     @JsonManagedReference("plane-flight")

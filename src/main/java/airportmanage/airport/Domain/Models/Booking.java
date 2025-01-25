@@ -3,10 +3,13 @@ package airportmanage.airport.Domain.Models;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
 import airportmanage.airport.Domain.Enums.BookingStatus;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -41,7 +44,11 @@ public class Booking implements IUserOwnedEntity {
     private LocalDateTime booking_date;
     private Integer nro_tickets;
     private Double total_price;
+
+    @Column(updatable = false, nullable = false)
+    @CreationTimestamp
     private LocalDateTime created_at;
+    
     @Enumerated(EnumType.STRING)
     private BookingStatus booking_status;
     private Boolean active;

@@ -10,7 +10,7 @@ create table flight(
         check_in_start DATETIME DEFAULT CURRENT_TIMESTAMP,
         check_in_end DATETIME DEFAULT CURRENT_TIMESTAMP,
         available_seats bigint,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         city varchar(200),
         plane varchar(200),
         flight_status VARCHAR(50) NOT NULL CHECK (flight_status IN ("pending", "scheduled", "boarding", "in_progress", "delayed","done","cancelled","diverted","technical_stop","returned"

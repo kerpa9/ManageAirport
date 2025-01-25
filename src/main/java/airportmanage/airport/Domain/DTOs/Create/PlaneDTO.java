@@ -25,6 +25,7 @@ public record PlaneDTO(
 ) {
     public PlaneDTO {
         active = active == null ? true : active;
+        created_at = LocalDateTime.now();
         plane_status = plane_status == null ? PlaneStatus.active : plane_status;
 
     }

@@ -10,7 +10,7 @@ create table user(
         verification varchar(255),
         email_verified boolean default false,
         token_expiry DATETIME DEFAULT CURRENT_TIMESTAMP,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         active boolean default true,
    
         primary key(id)

@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,7 +45,11 @@ public class City implements IUserOwnedEntity {
     private String country;
     private Double lat;
     private Double lon;
+
+    @Column(updatable = false, nullable = false)
+    @CreationTimestamp
     private LocalDateTime created_at;
+
     private Boolean active;
 
     @JsonManagedReference("city-origin-flights")

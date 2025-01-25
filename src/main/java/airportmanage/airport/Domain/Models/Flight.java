@@ -3,10 +3,13 @@ package airportmanage.airport.Domain.Models;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
 import airportmanage.airport.Domain.Enums.FlightStatus;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -42,7 +45,11 @@ public class Flight implements IUserOwnedEntity {
     private LocalDateTime check_in_start;
     private LocalDateTime check_in_end;
     private Integer available_seats;
+
+    @Column(updatable = false, nullable = false)
+    @CreationTimestamp
     private LocalDateTime created_at;
+    
     @Enumerated(EnumType.STRING)
     private FlightStatus flight_status;
     private Boolean active;

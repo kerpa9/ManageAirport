@@ -34,6 +34,7 @@ public record UserDTO(
     public UserDTO {
         HashPassword hash = new HashPassword();
         password = hash.hashingPass(password);
+        created_at = LocalDateTime.now();
         active = active == null ? true : active;
         email_verified = email_verified == null ? false : email_verified;
         role_user = role_user == null ? RoleUser.user : role_user;

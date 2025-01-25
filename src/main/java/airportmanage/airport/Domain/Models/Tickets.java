@@ -3,11 +3,14 @@ package airportmanage.airport.Domain.Models;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import airportmanage.airport.Config.RegisterFilterId.IUserOwnedEntity;
 import airportmanage.airport.Domain.Enums.TypeClass;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -44,9 +47,12 @@ public class Tickets implements IUserOwnedEntity {
     private TypeClass type_class;
     private Double price;
     private Integer seat_number;
+    
+    @Column(updatable = false, nullable = false)
+    @CreationTimestamp
     private LocalDateTime created_at;
+    
     private Boolean active;
-
     @JsonBackReference("user-tickets")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

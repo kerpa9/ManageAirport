@@ -14,8 +14,7 @@ public record BookingDTO(
         @NotNull Integer nro_tickets,
         @NotNull Double total_price,
         @NotNull LocalDateTime created_at,
-        @Enumerated(EnumType.STRING)
-        BookingStatus booking_status,
+        @Enumerated(EnumType.STRING) BookingStatus booking_status,
         Long idUser,
         Long idPassenger,
         Boolean active) {
@@ -23,6 +22,7 @@ public record BookingDTO(
     public BookingDTO {
         active = active == null ? true : active;
         booking_status = booking_status == null ? BookingStatus.pending : booking_status;
+        created_at = LocalDateTime.now();
 
     }
 

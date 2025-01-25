@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -53,7 +55,11 @@ public class User {
     private Genre genre;
     @Enumerated(EnumType.STRING)
     private RoleUser role_user;
+
+    @Column(updatable = false, nullable = false)
+    @CreationTimestamp
     private LocalDateTime created_at;
+
     private Boolean active;
     // Verify email
     private String verification;

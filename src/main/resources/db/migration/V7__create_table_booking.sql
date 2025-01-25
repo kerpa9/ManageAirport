@@ -10,7 +10,7 @@ create table booking(
         total_price float not null,
         user varchar(200),
         passenger varchar(200),
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         booking_status VARCHAR(50) NOT NULL CHECK (booking_status IN ("pending", "confirmed", "cancelled", "expired", "partially_paid")) DEFAULT 'pending',
         active boolean default true,
         INDEX idx_id_login (id_login),

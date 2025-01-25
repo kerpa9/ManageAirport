@@ -21,6 +21,7 @@ public record CityDTO(
 ) {
     public CityDTO {
         active = active == null ? true : active;
+        created_at = LocalDateTime.now();
     }
 
 }
